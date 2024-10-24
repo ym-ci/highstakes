@@ -8,18 +8,18 @@
 
 // Motor Ports
 // left
-const int FRONT_LEFT_MOTOR_PORT = -11;
-const int MIDDLE_LEFT_MOTOR_PORT = -2;
-const int BACK_LEFT_MOTOR_PORT = -20;
+const int FRONT_LEFT_MOTOR_PORT = -10;
+const int MIDDLE_LEFT_MOTOR_PORT = -9;
+const int BACK_LEFT_MOTOR_PORT = -8 ;
 // right
 const int FRONT_RIGHT_MOTOR_PORT = 1;
-const int MIDDLE_RIGHT_MOTOR_PORT = 5;
-const int BACK_RIGHT_MOTOR_PORT = 10;
+const int MIDDLE_RIGHT_MOTOR_PORT = 2;
+const int BACK_RIGHT_MOTOR_PORT = 3;
 
 // Sensor Ports
-const int IMU_PORT = 7;
-const int TRACKING_WHEEL_PORT = 8;
-const int TRACKING_WHEEL_OFFSET = 0;
+const int IMU_PORT = 5;
+const int TRACKING_WHEEL_PORT = 6;
+const int TRACKING_WHEEL_OFFSET = 1;
 
 // Motor Gearing
 const pros::v5::MotorGears FRONT_LEFT_MOTOR_GEAR = pros::v5::MotorGears::green;
@@ -42,8 +42,8 @@ const pros::motor_brake_mode_e_t BRAKE_MODE = pros::E_MOTOR_BRAKE_BRAKE;
 // lateral PID controller
 const lemlib::ControllerSettings lateral_controller(
     10,   // proportional gain (kP)
-    0,    // integral gain (kI)
-    3,    // derivative gain (kD)
+    6,    // integral gain (kI)
+    0,    // derivative gain (kD)
     3,    // anti windup
     1,    // small error range, in inches
     100,  // small error range timeout, in milliseconds
@@ -54,14 +54,14 @@ const lemlib::ControllerSettings lateral_controller(
 
 // angular PID controller
 const lemlib::ControllerSettings angular_controller(
-    2,    // proportional gain (kP)
+    4,    // proportional gain (kP)
     0,    // integral gain (kI)
-    10,   // derivative gain (kD)
-    3,    // anti windup
-    1,    // small error range, in degrees
-    100,  // small error range timeout, in milliseconds
-    3,    // large error range, in degrees
-    500,  // large error range timeout, in milliseconds
+    35,   // derivative gain (kD)
+    0,    // anti windup
+    0,    // small error range, in degrees
+    0,  // small error range timeout, in milliseconds
+    0,    // large error range, in degrees
+    0,  // large error range timeout, in milliseconds
     0     // maximum acceleration (slew)
 );
 
