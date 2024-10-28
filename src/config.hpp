@@ -32,9 +32,14 @@ const pros::v5::MotorGears BACK_RIGHT_MOTOR_GEAR = pros::v5::MotorGears::green;
 
 // Drivetrain Settings
 const float WHEEL_DIAMETER = lemlib::Omniwheel::NEW_4;
-const float TRACK_WIDTH = 10;
-const float DRIVETRAIN_RPM = 360;
-const float HORIZONTAL_DRIFT = 2;
+const float TRACK_WIDTH = 12.713702;
+const float DRIVETRAIN_RPM = 160;
+
+/* horizontal drift controls how fast the robot should move through turns, and it relates to how easily the robot can be pushed side to side 
+A value of 2 is good for Omni drivetrains
+8 is good for tractions
+higher number -> greater speed in curves */
+const float HORIZONTAL_DRIFT = 4; // we are half and half so 4 is good
 
 // Other Drivetrain Settings
 const pros::motor_brake_mode_e_t BRAKE_MODE = pros::E_MOTOR_BRAKE_BRAKE;
