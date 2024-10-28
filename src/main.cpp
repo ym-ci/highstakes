@@ -7,6 +7,8 @@
 #include "util/slewRateLimiter.hpp"
 #include "util/triggerUtil.hpp"
 
+// TODO: Migrate Drivebase into another file
+
 // Controller
 pros::Controller master(pros::E_CONTROLLER_MASTER);
 
@@ -23,28 +25,28 @@ middle_left_motor, back_left_motor}; std::vector<pros::Motor>
 motors_right{front_right_motor, middle_right_motor, back_right_motor};
 */
 // Drive Motor Group
-pros::MotorGroup left_mg({FRONT_LEFT_MOTOR_PORT, MIDDLE_LEFT_MOTOR_PORT,
-                          BACK_LEFT_MOTOR_PORT},
-                         pros::MotorGearset::green);
-pros::MotorGroup right_mg({FRONT_RIGHT_MOTOR_PORT, MIDDLE_RIGHT_MOTOR_PORT,
-                           BACK_RIGHT_MOTOR_PORT},
-                          pros::MotorGearset::green);
+pros::MotorGroup left_mg({DriveConstants::FRONT_LEFT_MOTOR_PORT, DriveConstants::MIDDLE_LEFT_MOTOR_PORT,
+              DriveConstants::BACK_LEFT_MOTOR_PORT},
+             pros::MotorGearset::green);
+pros::MotorGroup right_mg({DriveConstants::FRONT_RIGHT_MOTOR_PORT, DriveConstants::MIDDLE_RIGHT_MOTOR_PORT,
+               DriveConstants::BACK_RIGHT_MOTOR_PORT},
+              pros::MotorGearset::green);
 
 lemlib::Drivetrain drivetrain(
     &left_mg,         // left motor group
     &right_mg,        // right motor group
-    TRACK_WIDTH,      // 10 inch track width
-    WHEEL_DIAMETER,   // using new 4" omnis
-    DRIVETRAIN_RPM,   // drivetrain rpm is 360
-    HORIZONTAL_DRIFT  // horizontal drift is 2 (for now)
+    DriveConstants::TRACK_WIDTH,      // 10 inch track width
+    DriveConstants::WHEEL_DIAMETER,   // using new 4" omnis
+    DriveConstants::DRIVETRAIN_RPM,   // drivetrain rpm is 360
+    DriveConstants::HORIZONTAL_DRIFT  // horizontal drift is 2 (for now)
 );
 // Drivetrain Settings
-pros::Imu imu(IMU_PORT);
-pros::Rotation vertical_rotation(TRACKING_WHEEL_PORT);
+pros::Imu imu(DriveConstants::IMU_PORT);
+pros::Rotation vertical_rotation(DriveConstants::TRACKING_WHEEL_PORT);
 
 lemlib::TrackingWheel vertical_tracking_wheel(&vertical_rotation,
                                               lemlib::Omniwheel::NEW_2,
-                                              TRACKING_WHEEL_OFFSET);
+                                              DriveConstants::TRACKING_WHEEL_OFFSET);
 
 // Odometry
 lemlib::OdomSensors odom_sensors(&vertical_tracking_wheel, nullptr, nullptr,
@@ -52,14 +54,47 @@ lemlib::OdomSensors odom_sensors(&vertical_tracking_wheel, nullptr, nullptr,
 
 // Chassis
 lemlib::Chassis chassis(drivetrain,          // drivetrain
-                        lateral_controller,  // lateral controller
-                        angular_controller,  // angular controller
+                        DriveConstants::lateral_controller,  // lateral controller
+                        DriveConstants::angular_controller,  // angular controller
                         odom_sensors         // odom sensors
 );
 
 // Drive Mode
 Toggle tankDriveToggle([]() -> bool { return master.get_digital(DIGITAL_A); },
                        TriggerMode::RISING_EDGE);
+
+
+// Task objects
+
+pros::Task driveTask = nullptr;
+
+// Combined task for handling both tank and arcade drive modes
+void drive(void* param) {
+    while (true) {
+        // Determine the current drive mode
+        bool tankDrive = tankDriveToggle.getState();
+
+        // Print the drive mode to controller
+        master.print(0, 0, "Drive Mode: %s", tankDrive ? "Tank" : "Arcade");
+
+        if (tankDrive) {
+            // Tank drive control
+            double left = master.get_analog(ANALOG_LEFT_Y);
+            double right = master.get_analog(ANALOG_RIGHT_Y);
+            chassis.tank(left, right);
+        } else {
+            // Arcade drive control
+            double throttle = master.get_analog(ANALOG_LEFT_Y);
+            double theta = master.get_analog(ANALOG_LEFT_X) * 0.5;
+            chassis.arcade(throttle, theta);
+        }
+
+        // Delay to prevent CPU overuse
+        pros::delay(STANDARD_DELAY);
+    }
+}
+
+
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -74,17 +109,19 @@ void initialize() {
   chassis.calibrate();
 
   // Set Motot Idle Mode
-  right_mg.set_brake_mode(BRAKE_MODE);
-  left_mg.set_brake_mode(BRAKE_MODE);
+  right_mg.set_brake_mode(DriveConstants::BRAKE_MODE);
+  left_mg.set_brake_mode(DriveConstants::BRAKE_MODE);
 
   pros::Task screen_task([&]() {
     while (true) {
       pros::lcd::print(0, "X: %f", chassis.getPose().x);          // x
       pros::lcd::print(1, "Y: %f", chassis.getPose().y);          // y
       pros::lcd::print(2, "Theta: %f", chassis.getPose().theta);  // heading
-      pros::delay(20);
+      pros::delay(STANDARD_DELAY);
     }
   });
+  // Initialize the drive task
+  driveTask = pros::Task(drive);
   printf("Initialized\n");
 }
 
@@ -127,28 +164,6 @@ void autonomous() {
   chassis.turnToHeading(90, 100000);
 }
 
-void arcade() {
-  // pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT)
-  // >> 2,
-  //                  (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
-  //                  (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);  //
-  //                  Prints status of the emulated screen LCDs
-  // Move the contoller out to variable
-  double throttle = master.get_analog(ANALOG_LEFT_Y);
-  double theta = master.get_analog(ANALOG_LEFT_X) * 0.5;
-  // Artificial acceleration
-
-  // Drive the robot
-  chassis.arcade(throttle, theta);
-}
-
-void tank() {
-  double left = master.get_analog(ANALOG_LEFT_Y);
-  double right = master.get_analog(ANALOG_RIGHT_Y);
-  // Drive the robot
-  chassis.tank(left, right);
-}
-
 /**
  * Runs the operator control code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -163,42 +178,40 @@ void tank() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-  printf("Starting opcontrol\n");
-  while (true) {
-    // Check if the robot is in tank drive mode
+    printf("Starting opcontrol\n");
+    
+    while (true) {
+        // Check if the robot is in tank drive mode
+        bool tankDrive = tankDriveToggle.getState();
 
-    bool tankDrive = tankDriveToggle.getState();
-    // Print the drive mode to controller
-    master.print(0, 0, "State: OPCTRL");
-    master.print(1, 0, "Drive Mode: %s", tankDrive ? "Tank" : "Arcade");
+        // Print the drive mode to controller
+        master.print(0, 0, "State: OPCTRL");
+        master.print(1, 0, "Drive Mode: %s", tankDrive ? "Tank" : "Arcade");
 
-    if (master.get_digital(DIGITAL_B)) {
-      // chassis.moveToPose(3, 3, 90, 4000);
-      chassis.turnToHeading(90, 4000);
-      pros::delay(1000);
-      chassis.turnToHeading(0, 4000);
-      pros::delay(1000);
-      chassis.turnToHeading(-90, 4000);
-      pros::delay(1000);
-      chassis.turnToHeading(0, 4000);
-    } else if (master.get_digital(DIGITAL_Y)) {
-      chassis.moveToPose(0, 0, 0, 5000);
-    } else if (master.get_digital(DIGITAL_X)) {
-      printf("Tuning PID\n");
-      chassis.setPose(0, 0, 0);
-      chassis.turnToHeading(90, 100000);
-      printf("Done Tuning PID\n");
-      // print kp, ki
-      
-    } else {
-      // Drive the robot
-      if (tankDrive) {
-        tank();
-      } else {
-        arcade();
-      }
+        // Control logic for buttons
+        if (master.get_digital(DIGITAL_B)) {
+            driveTask.suspend();
+            chassis.turnToHeading(90, 4000);
+            pros::delay(1000);
+            chassis.turnToHeading(0, 4000);
+            pros::delay(1000);
+            chassis.turnToHeading(-90, 4000);
+            pros::delay(1000);
+            chassis.turnToHeading(0, 4000);
+        } else if (master.get_digital(DIGITAL_Y)) {
+            driveTask.suspend();
+            chassis.moveToPose(0, 0, 0, 5000);
+        } else if (master.get_digital(DIGITAL_X)) {
+            driveTask.suspend();
+          
+            printf("Tuning PID\n");
+            chassis.setPose(0, 0, 0);
+            chassis.turnToHeading(90, 100000);
+            printf("Done Tuning PID\n");
+        } else {
+              driveTask.resume();
+        }
+
+        pros::delay(STANDARD_DELAY); 
     }
-
-    pros::delay(20);  // Run for 20 ms then update
-  }
 }
