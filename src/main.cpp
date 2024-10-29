@@ -7,6 +7,8 @@
 #include "util/slewRateLimiter.hpp"
 #include "util/triggerUtil.hpp"
 
+// TODO: Migrate Drivebase into another file
+
 // Controller
 pros::Controller master(pros::E_CONTROLLER_MASTER);
 
@@ -23,28 +25,28 @@ middle_left_motor, back_left_motor}; std::vector<pros::Motor>
 motors_right{front_right_motor, middle_right_motor, back_right_motor};
 */
 // Drive Motor Group
-pros::MotorGroup left_mg({FRONT_LEFT_MOTOR_PORT, MIDDLE_LEFT_MOTOR_PORT,
-                          BACK_LEFT_MOTOR_PORT},
-                         pros::MotorGearset::green);
-pros::MotorGroup right_mg({FRONT_RIGHT_MOTOR_PORT, MIDDLE_RIGHT_MOTOR_PORT,
-                           BACK_RIGHT_MOTOR_PORT},
-                          pros::MotorGearset::green);
+pros::MotorGroup left_mg({DriveConstants::FRONT_LEFT_MOTOR_PORT, DriveConstants::MIDDLE_LEFT_MOTOR_PORT,
+              DriveConstants::BACK_LEFT_MOTOR_PORT},
+             pros::MotorGearset::green);
+pros::MotorGroup right_mg({DriveConstants::FRONT_RIGHT_MOTOR_PORT, DriveConstants::MIDDLE_RIGHT_MOTOR_PORT,
+               DriveConstants::BACK_RIGHT_MOTOR_PORT},
+              pros::MotorGearset::green);
 
 lemlib::Drivetrain drivetrain(
     &left_mg,         // left motor group
     &right_mg,        // right motor group
-    TRACK_WIDTH,      // 10 inch track width
-    WHEEL_DIAMETER,   // using new 4" omnis
-    DRIVETRAIN_RPM,   // drivetrain rpm is 360
-    HORIZONTAL_DRIFT  // horizontal drift is 2 (for now)
+    DriveConstants::TRACK_WIDTH,      // 10 inch track width
+    DriveConstants::WHEEL_DIAMETER,   // using new 4" omnis
+    DriveConstants::DRIVETRAIN_RPM,   // drivetrain rpm is 360
+    DriveConstants::HORIZONTAL_DRIFT  // horizontal drift is 2 (for now)
 );
 // Drivetrain Settings
-pros::Imu imu(IMU_PORT);
-pros::Rotation vertical_rotation(TRACKING_WHEEL_PORT);
+pros::Imu imu(DriveConstants::IMU_PORT);
+pros::Rotation vertical_rotation(DriveConstants::TRACKING_WHEEL_PORT);
 
 lemlib::TrackingWheel vertical_tracking_wheel(&vertical_rotation,
                                               lemlib::Omniwheel::NEW_2,
-                                              TRACKING_WHEEL_OFFSET);
+                                              DriveConstants::TRACKING_WHEEL_OFFSET);
 
 // Odometry
 lemlib::OdomSensors odom_sensors(&vertical_tracking_wheel, nullptr, nullptr,
@@ -52,8 +54,8 @@ lemlib::OdomSensors odom_sensors(&vertical_tracking_wheel, nullptr, nullptr,
 
 // Chassis
 lemlib::Chassis chassis(drivetrain,          // drivetrain
-                        lateral_controller,  // lateral controller
-                        angular_controller,  // angular controller
+                        DriveConstants::lateral_controller,  // lateral controller
+                        DriveConstants::angular_controller,  // angular controller
                         odom_sensors         // odom sensors
 );
 
@@ -74,15 +76,15 @@ void initialize() {
   chassis.calibrate();
 
   // Set Motot Idle Mode
-  right_mg.set_brake_mode(BRAKE_MODE);
-  left_mg.set_brake_mode(BRAKE_MODE);
+  right_mg.set_brake_mode(DriveConstants::BRAKE_MODE);
+  left_mg.set_brake_mode(DriveConstants::BRAKE_MODE);
 
   pros::Task screen_task([&]() {
     while (true) {
       pros::lcd::print(0, "X: %f", chassis.getPose().x);          // x
       pros::lcd::print(1, "Y: %f", chassis.getPose().y);          // y
       pros::lcd::print(2, "Theta: %f", chassis.getPose().theta);  // heading
-      pros::delay(20);
+      pros::delay(STANDARD_DELAY);
     }
   });
   printf("Initialized\n");
