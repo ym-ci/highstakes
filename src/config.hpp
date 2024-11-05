@@ -13,13 +13,14 @@ public:
     static const int FRONT_LEFT_MOTOR_PORT = -10;
     static const int MIDDLE_LEFT_MOTOR_PORT = -9;
     static const int BACK_LEFT_MOTOR_PORT = -8;
-    static const int FRONT_RIGHT_MOTOR_PORT = 1;
+    
+    static const int FRONT_RIGHT_MOTOR_PORT = 11;
     static const int MIDDLE_RIGHT_MOTOR_PORT = 2;
-    static const int BACK_RIGHT_MOTOR_PORT = 3;
+    static const int BACK_RIGHT_MOTOR_PORT = 12;
 
     // Sensor Ports
-    static const int IMU_PORT = 5;
-    static const int TRACKING_WHEEL_PORT = 6;
+    static const int IMU_PORT = 1;
+    constexpr static const   float TRACKING_WHEEL_PORT = 2.5;
     static const int TRACKING_WHEEL_OFFSET = 1;
 
     // Motor Gearing
@@ -47,7 +48,7 @@ public:
 
 // Definition of the PID controller settings outside the class
 const lemlib::ControllerSettings DriveConstants::lateral_controller(
-    10,   // proportional gain (kP)
+    20,   // proportional gain (kP)
     6,    // integral gain (kI)
     0,    // derivative gain (kD)
     3,    // anti windup
