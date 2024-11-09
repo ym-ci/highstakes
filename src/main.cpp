@@ -23,7 +23,7 @@ struct RobotSubsystems {
    Robot::Drivetrain drivetrain;
    Robot::Intake intake;
    Robot::Latch latch;
-   // Robot::Hang hang;
+   Robot::Hang hang;
 } subsystem;
 
 struct RobotScreen {

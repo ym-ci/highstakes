@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "lemlib/chassis/trackingWheel.hpp"
 #include "pros/abstract_motor.hpp"
 #include "pros/misc.hpp"
 #include "pros/motors.hpp"
@@ -22,21 +23,21 @@ namespace Globals {
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 pros::Controller partner(pros::E_CONTROLLER_PARTNER);
 
-pros::Motor RightFront(13, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
-pros::Motor LeftFront(-19, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
-pros::Motor LeftBack(-18, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
-pros::Motor RightBack(12, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
-pros::Motor LeftMid(20, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
-pros::Motor RightMid(-11, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
-pros::Motor IntakeMotor(-1, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
-pros::Motor HookMotor(2, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
+pros::Motor RightFront(13, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+pros::Motor LeftFront(-19, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+pros::Motor LeftBack(-18, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+pros::Motor RightBack(12, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+pros::Motor LeftMid(20, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+pros::Motor RightMid(-11, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+pros::Motor IntakeMotor(-1, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+pros::Motor HookMotor(2, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
 
 // placeholder port number
 
 pros::adi::Pneumatics LatchControl('A', false);
 pros::adi::Pneumatics HangControl('B', false);
 
-pros::Rotation lateral_sensor(16);
+// pros::Rotation lateral_sensor(16);
 pros::Rotation horizontal_sensor(-17);
 
 pros::Imu inertial_sensor(14);
@@ -59,22 +60,25 @@ pros::MotorGroup drive_({LeftFront.get_port(), RightFront.get_port(), LeftMid.ge
                          LeftBack.get_port(), RightBack.get_port()});
 
 // Lemlib objects - Used by lemlib drive and odometry functions
-lemlib::TrackingWheel horizontal_tracking_wheel(&horizontal_sensor, lemlib::Omniwheel::NEW_2, -5);
-lemlib::TrackingWheel vertical_tracking_wheel(&lateral_sensor, lemlib::Omniwheel::NEW_2, -1.45);
+lemlib::TrackingWheel horizontal_tracking_wheel(
+                                        &horizontal_sensor, 
+                                  lemlib::Omniwheel::NEW_2,
+                                       1);
+// lemlib::TrackingWheel vertical_tracking_wheel(&lateral_sensor, lemlib::Omniwheel::NEW_2, -1.45);
 
 // Describes the lemlib objects that are used to control the autonomous
 // functions of the robot.
 lemlib::Drivetrain drivetrain{
     &drive_left,  // left drivetrain motors
     &drive_right, // right drivetrain motors
-    12.25,        // track width
-    lemlib::Omniwheel::OLD_325,
-    450, // drivetrain rpm is 450
+    12.713702,        // track width
+    lemlib::Omniwheel::NEW_4,
+    250, // drivetrain rpm is 450
     2    // horizontal drift is 2
 };
 
 lemlib::OdomSensors sensors{
-    &vertical_tracking_wheel,   // vertical tracking wheel 1
+    nullptr,   // vertical tracking wheel 1
     nullptr,                    // vertical tracking wheel 2
     &horizontal_tracking_wheel, // horizontal tracking wheel 1
     nullptr,                    // we don't have a second tracking wheel, so we set it to nullptr
