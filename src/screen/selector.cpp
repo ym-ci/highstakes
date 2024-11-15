@@ -2,6 +2,7 @@
 
 #include "main.h" // IWYU pragma: export
 #include "robot/auton.h"
+#include "robot/drivetrain.h"
 
 using namespace Robot;
 
@@ -38,7 +39,7 @@ void selector_screen::auton_ui_update(lv_event_t *e) {
       int currentAutonIndex = lv_dropdown_get_selected(auton_dd) + 1;
       bool currentAlliance = lv_obj_has_state(allianceSwitch, LV_STATE_CHECKED);
       int autonNum = currentAlliance ? currentAutonIndex * -1 : currentAutonIndex;
-      Autonomous::AutonSwitcher(autonNum);
+      Autonomous::autonSwitcher(autonNum);
    }
    /* Updates content of the dropdown list based on the alliance color, using
     * the state of the alliance color switch, which is detected through
@@ -56,18 +57,18 @@ void selector_screen::auton_ui_update(lv_event_t *e) {
       }
       // Switches the autonomous routine to the opposite alliance color, accounts
       // for option reset
-      Autonomous::AutonSwitcher(Autonomous::auton > 0 ? Autonomous::BLUE_LEFT : Autonomous::RED_LEFT);
+      Autonomous::autonSwitcher(Autonomous::auton > 0 ? Autonomous::BLUE_LEFT : Autonomous::RED_LEFT);
    } else {
       if (lv_obj_has_state(skillSwitch, LV_STATE_CHECKED)) {
          // Remembers the last competition autonomous
          selector_screen::lastAuton = Autonomous::auton;
 
          // Updates the autonomous routine to skills
-         Autonomous::AutonSwitcher(Autonomous::SKILLS);
+         Autonomous::autonSwitcher(Autonomous::SKILLS);
          lv_obj_add_state(allianceSwitch, LV_STATE_DISABLED);
          lv_obj_add_state(auton_dd, LV_STATE_DISABLED);
       } else {
-         Autonomous::AutonSwitcher(selector_screen::lastAuton);
+         Autonomous::autonSwitcher(selector_screen::lastAuton);
          lv_obj_clear_state(allianceSwitch, LV_STATE_DISABLED);
          lv_obj_clear_state(auton_dd, LV_STATE_DISABLED);
       }
@@ -92,7 +93,7 @@ void selector_screen::drive_update(lv_event_t *e) {
    lv_obj_t *driveLabel = lv_obj_get_child(tab1, -2);
 
    int rollerIndex = lv_roller_get_selected(drive_roller);
-   std::string driveMode = Drivetrain::SwitchDrive(rollerIndex);
+   std::string driveMode = Drivetrain::setDriveMode(rollerIndex);
 
    lv_label_set_text_fmt(driveLabel, "Current drive mode: %s", driveMode.c_str());
 }

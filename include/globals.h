@@ -39,22 +39,22 @@ namespace Globals {
 extern pros::Controller partner;
 extern pros::Controller controller;
 
-extern pros::Motor RightFront;
-extern pros::Motor LeftFront;
-extern pros::Motor LeftBack;
-extern pros::Motor RightBack;
-extern pros::Motor LeftMid;
+extern pros::Motor rightFront;
+extern pros::Motor leftFront;
+extern pros::Motor leftBack;
+extern pros::Motor rightBack;
+extern pros::Motor leftMid;
 
-extern pros::Motor RightMid;
-extern pros::Motor IntakeMotor;
-extern pros::Motor HookMotor;
+extern pros::Motor rightMid;
+extern pros::Motor intakeMotor;
+// extern pros::Motor hookMotor;
 
 extern pros::MotorGroup punchers;
-extern pros::MotorGroup drive_left;
-extern pros::MotorGroup drive_right;
+extern pros::MotorGroup driveLeft;
+extern pros::MotorGroup driveRight;
 // Used as a motor group meant to be passed into lemlib, a full drivetrain
 // group.
-extern pros::MotorGroup drive_;
+extern pros::MotorGroup drive;
 
 extern lemlib::Drivetrain drivetrain;
 
@@ -68,27 +68,30 @@ extern pros::vision_signature_s_t BLUE_SIG;
 extern pros::vision_signature_s_t BLUE_DARK_SIG;
 
 extern pros::Rotation lateral_sensor;
-extern pros::Rotation horizontal_sensor;
+extern pros::Rotation horizontalSensor;
+
+extern pros::Imu imu;
+
 // forward/backward PID
-extern lemlib::ControllerSettings lateral_controller;
+extern lemlib::ControllerSettings lateralController;
 
 // turning PID
-extern lemlib::ControllerSettings angular_controller;
+extern lemlib::ControllerSettings angularController;
 
 // curvature
-extern lemlib::ExpoDriveCurve steer_curve;
-extern lemlib::ExpoDriveCurve throttle_curve;
+extern lemlib::ExpoDriveCurve steerCurve;
+extern lemlib::ExpoDriveCurve throttleCurve;
 
 extern lemlib::Chassis chassis;
 
-extern lemlib::ExpoDriveCurve throttle_curve;
+extern lemlib::ExpoDriveCurve throttleCurve;
 
-extern lemlib::ExpoDriveCurve steer_curve;
+extern lemlib::ExpoDriveCurve steerCurve;
 
 extern pros::adi::DigitalIn drivetrainToggleSwitch;
 extern pros::adi::DigitalIn autonToggleSwitch;
 
-extern pros::adi::Pneumatics LatchControl;
+extern pros::adi::Pneumatics latchControl;
 extern pros::adi::Pneumatics HangControl;
 
 } // namespace Globals

@@ -41,7 +41,7 @@ class Autonomous {
     * @param puncher A reference to the Puncher object.
     * @param autono A boolean value indicating whether to use autonomous mode.
     */
-   void AutoDrive(Intake &intake, Latch &latch);
+   void autoDrive(Intake &intake, Latch &latch);
 
    /**
     * @brief Switches the autonomous program.
@@ -51,7 +51,7 @@ class Autonomous {
     * program. It allows the user to cycle through different autonomous programs
     * during runtime.
     */
-   static void AutonSwitcher(int autonNum);
+   static void autonSwitcher(int autonNum);
 
  private:
    /**
@@ -61,7 +61,7 @@ class Autonomous {
     * strategy. It contains the specific actions and movements required for this
     * strategy.
     */
-   void Auton1(Intake &intake, Latch &latch);
+   void auton1(Intake &intake, Latch &latch);
 
    /**
     * @brief Runs the autonomous path for the near side offensive game strategy.
@@ -70,7 +70,7 @@ class Autonomous {
     * strategy. It contains the specific actions and movements required for this
     * strategy.
     */
-   void Auton2(Intake &intake, Latch &latch);
+   void auton2(Intake &intake, Latch &latch);
 
    /**
     * @brief Runs the puncher routine for the Skills Challenge.
@@ -81,7 +81,7 @@ class Autonomous {
     *
     * @param puncher A reference to the Puncher object.
     */
-   void Auton3(Intake &intake, Latch &latch);
+   void auton3(Intake &intake, Latch &latch);
 
    /**
     * @brief Runs the autonomous path for the far side offensive game strategy.
@@ -91,7 +91,7 @@ class Autonomous {
     * @todo Make the autonomous more fleshed out, building it properly for the
     * competition
     */
-   void Auton4(Intake &intake, Latch &latch);
+   void auton4(Intake &intake, Latch &latch);
 
    /**
     * Executes the Skills challenge autonomous.
@@ -102,6 +102,6 @@ class Autonomous {
     * @param intake The reference to the `Intake` object.
     * @param latch The reference to the `Latch` object.
     */
-   void Auton5(Intake &intake, Latch &latch);
+   void auton5(Intake &intake, Latch &latch);
 };
 } // namespace Robot

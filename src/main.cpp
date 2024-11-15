@@ -23,7 +23,7 @@ struct RobotSubsystems {
    Robot::Drivetrain drivetrain;
    Robot::Intake intake;
    Robot::Latch latch;
-   Robot::Hang hang;
+   // Robot::Hang hang;
 } subsystem;
 
 struct RobotScreen {
@@ -91,13 +91,13 @@ void autonomous() {
          pros::lcd::print(1, "Y: %f", chassis.getPose().y);         // y
          pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
          // delay to save resources
-         pros::lcd::print(3, "Rotation Sensor: %i", lateral_sensor.get_position());
-         pros::lcd::print(4, "Rotation Sensor: %i", horizontal_sensor.get_position());
+         // pros::lcd::print(3, "Rotation Sensor: %i", lateral_sensor.get_position());
+         pros::lcd::print(3, "Rotation Sensor: %i", horizontalSensor.get_position());
          pros::delay(20);
       }
    });
 
-   subsystem.autonomous.AutoDrive(subsystem.intake, subsystem.latch);
+   subsystem.autonomous.autoDrive(subsystem.intake, subsystem.latch);
 }
 
 /**

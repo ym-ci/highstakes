@@ -23,24 +23,24 @@ namespace Globals {
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 pros::Controller partner(pros::E_CONTROLLER_PARTNER);
 
-pros::Motor RightFront(13, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
-pros::Motor LeftFront(-19, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
-pros::Motor LeftBack(-18, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
-pros::Motor RightBack(12, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
-pros::Motor LeftMid(20, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
-pros::Motor RightMid(-11, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
-pros::Motor IntakeMotor(-1, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
-pros::Motor HookMotor(2, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+pros::Motor leftFront(-14, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+pros::Motor leftMid(-16, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+pros::Motor leftBack(-18, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+pros::Motor rightFront(2, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+pros::Motor rightMid(7, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+pros::Motor rightBack(20, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+pros::Motor intakeMotor(11, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+// pros::Motor hookMotor(2, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
 
 // placeholder port number
 
-pros::adi::Pneumatics LatchControl('A', false);
+pros::adi::Pneumatics latchControl('A', false);
 pros::adi::Pneumatics HangControl('B', false);
 
 // pros::Rotation lateral_sensor(16);
-pros::Rotation horizontal_sensor(-17);
+pros::Rotation horizontalSensor(-10);
 
-pros::Imu inertial_sensor(14);
+pros::Imu imu(5);
 
 // Vision sensor configuration
 pros::Vision colorSensor(3);
@@ -54,14 +54,14 @@ pros::vision_signature_s_t BLUE_DARK_SIG =
     pros::c::vision_signature_from_utility(3, -4793, -4173, -4483, 1069, 2765, 1917, 3, 0);
 
 // Pros motor groups - most used by lemlib
-pros::MotorGroup drive_left({LeftFront.get_port(), LeftMid.get_port(), LeftBack.get_port()});
-pros::MotorGroup drive_right({RightFront.get_port(), RightMid.get_port(), RightBack.get_port()});
-pros::MotorGroup drive_({LeftFront.get_port(), RightFront.get_port(), LeftMid.get_port(), RightMid.get_port(),
-                         LeftBack.get_port(), RightBack.get_port()});
+pros::MotorGroup driveLeft({leftFront.get_port(), leftMid.get_port(), leftBack.get_port()});
+pros::MotorGroup driveRight({rightFront.get_port(), rightMid.get_port(), rightBack.get_port()});
+pros::MotorGroup drive({leftFront.get_port(), rightFront.get_port(), leftMid.get_port(), rightMid.get_port(),
+                         leftBack.get_port(), rightBack.get_port()});
 
 // Lemlib objects - Used by lemlib drive and odometry functions
-lemlib::TrackingWheel horizontal_tracking_wheel(
-                                        &horizontal_sensor, 
+lemlib::TrackingWheel horizontalTrackingWheel(
+                                        &horizontalSensor, 
                                   lemlib::Omniwheel::NEW_2,
                                        1);
 // lemlib::TrackingWheel vertical_tracking_wheel(&lateral_sensor, lemlib::Omniwheel::NEW_2, -1.45);
@@ -69,8 +69,8 @@ lemlib::TrackingWheel horizontal_tracking_wheel(
 // Describes the lemlib objects that are used to control the autonomous
 // functions of the robot.
 lemlib::Drivetrain drivetrain{
-    &drive_left,  // left drivetrain motors
-    &drive_right, // right drivetrain motors
+    &driveLeft,  // left drivetrain motors
+    &driveRight, // right drivetrain motors
     12.713702,        // track width
     lemlib::Omniwheel::NEW_4,
     250, // drivetrain rpm is 450
@@ -80,14 +80,14 @@ lemlib::Drivetrain drivetrain{
 lemlib::OdomSensors sensors{
     nullptr,   // vertical tracking wheel 1
     nullptr,                    // vertical tracking wheel 2
-    &horizontal_tracking_wheel, // horizontal tracking wheel 1
+    &horizontalTrackingWheel, // horizontal tracking wheel 1
     nullptr,                    // we don't have a second tracking wheel, so we set it to nullptr
-    &inertial_sensor            // inertial sensor
+    &imu            // inertial sensor
 };
 
 // forward/backward PID
 // lateral PID controller
-lemlib::ControllerSettings lateral_controller(10,  // proportional gain (kP)
+lemlib::ControllerSettings lateralController(10,  // proportional gain (kP)
                                               0,   // integral gain (kI)
                                               4.5, // derivative gain (kD)
                                               3,   // anti windup
@@ -99,7 +99,7 @@ lemlib::ControllerSettings lateral_controller(10,  // proportional gain (kP)
 );
 
 // angular PID controller
-lemlib::ControllerSettings angular_controller(2,    // proportional gain (kP)
+lemlib::ControllerSettings angularController(2,    // proportional gain (kP)
                                               0,    // integral gain (kI)
                                               10.5, // derivative gain (kD)
                                               3,    // anti windup
@@ -110,18 +110,18 @@ lemlib::ControllerSettings angular_controller(2,    // proportional gain (kP)
                                               0     // maximum acceleration (slew)
 );
 
-lemlib::ExpoDriveCurve throttle_curve(3,    // joystick deadband out of 127
+lemlib::ExpoDriveCurve throttleCurve(3,    // joystick deadband out of 127
                                       10,   // minimum output where drivetrain will move out of 127
                                       1.019 // expo curve gain
 );
 
 // input curve for steer input during driver control
-lemlib::ExpoDriveCurve steer_curve(3,    // joystick deadband out of 127
+lemlib::ExpoDriveCurve steerCurve(3,    // joystick deadband out of 127
                                    10,   // minimum output where drivetrain will move out of 127
                                    1.019 // expo curve gain
 );
 
-lemlib::Chassis chassis(drivetrain, lateral_controller, angular_controller, sensors, &throttle_curve, &steer_curve);
+lemlib::Chassis chassis(drivetrain, lateralController, angularController, sensors, &throttleCurve, &steerCurve);
 
 } // namespace Globals
 

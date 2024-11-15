@@ -67,7 +67,7 @@ class Drivetrain {
     * Arcade drive uses the left joystick for forward and backward movement, and the right joystick for left and right
     * movement. Tank drive uses the left and right joysticks for controlling the left and right sides of the robot.
     */
-   static std::string SwitchDrive(int driveMode);
+   static std::string setDriveMode(int driveMode);
 
    /**
     * @brief Cycles through each drivetrain control mode.
@@ -88,7 +88,7 @@ class Drivetrain {
     * Arcade drive uses the left joystick for forward and backward movement, and
     * the right joystick for left and right movement.
     */
-   void ArcadeDrive();
+   void arcadeDrive();
 
    /**
     * @brief Drives the robot using curvature drive.
@@ -96,7 +96,7 @@ class Drivetrain {
     * Curvature drive applies curvature to turns and a negative inertia
     * accumulator.
     */
-   void CurvatureDrive();
+   void curveDrive();
 
    /**
     * @brief Drives the robot using tank drive.
@@ -104,7 +104,7 @@ class Drivetrain {
     * Tank drive uses the left and right joysticks for controlling the left and
     * right sides of the robot.
     */
-   void TankDrive();
+   void tankDrive();
 };
 
 } // namespace Robot

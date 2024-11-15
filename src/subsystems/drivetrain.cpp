@@ -11,7 +11,7 @@ bool Drivetrain::isReversed = false;
 
 Drivetrain::Drivetrain() { Drivetrain::driveMode = CURVATURE_DRIVE; }
 
-void Drivetrain::CurvatureDrive() {
+void Drivetrain::curveDrive() {
    int left = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
    int right = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
 
@@ -20,7 +20,7 @@ void Drivetrain::CurvatureDrive() {
    pros::delay(DEFAULT_DELAY_LENGTH);
 }
 
-void Drivetrain::ArcadeDrive() {
+void Drivetrain::arcadeDrive() {
    // Arcade Measurements
    int left = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
    int right = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
@@ -30,7 +30,7 @@ void Drivetrain::ArcadeDrive() {
    pros::delay(DEFAULT_DELAY_LENGTH);
 }
 
-void Drivetrain::TankDrive() {
+void Drivetrain::tankDrive() {
    int left = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
    int right = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
 
@@ -43,13 +43,13 @@ void Drivetrain::TankDrive() {
 void Drivetrain::run() {
    switch (Drivetrain::driveMode) {
    case CURVATURE_DRIVE:
-      Drivetrain::CurvatureDrive();
+      Drivetrain::curveDrive();
       break;
    case ARCADE_DRIVE:
-      Drivetrain::ArcadeDrive();
+      Drivetrain::arcadeDrive();
       break;
    case TANK_DRIVE:
-      Drivetrain::TankDrive();
+      Drivetrain::tankDrive();
       break;
    }
 }
@@ -57,7 +57,7 @@ void Drivetrain::run() {
 // Cycle through each drivetrain control mode, overflows back to 0
 std::string Drivetrain::toggleDrive() {
    int driveMode = (Drivetrain::driveMode + 1) % (TANK_DRIVE + 1);
-   return SwitchDrive(driveMode);
+   return setDriveMode(driveMode);
 }
 
 int Drivetrain::thrustHandler(int thrust) {
@@ -69,7 +69,7 @@ int Drivetrain::thrustHandler(int thrust) {
 }
 
 // Switch the drivetrain control mode between arcade and tank drive with the down button(between 1 and 2)
-std::string Drivetrain::SwitchDrive(int driveMode) {
+std::string Drivetrain::setDriveMode(int driveMode) {
    switch (driveMode) {
    case 0:
       Drivetrain::driveMode = CURVATURE_DRIVE;

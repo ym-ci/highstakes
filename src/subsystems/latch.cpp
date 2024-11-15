@@ -13,4 +13,4 @@ void Latch::run() {
 
 Latch::Latch() { ; }
 
-void Latch::toggle() { LatchControl.toggle(); }
+void Latch::toggle() { latchControl.toggle(); }

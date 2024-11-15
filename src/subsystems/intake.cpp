@@ -16,14 +16,14 @@ Intake::Intake() {
 void Intake::run() {
 
    if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-      IntakeMotor.move_velocity(-FASTER_VELOCITY);
-      HookMotor.move_velocity(-SLOWER_VELOCITY);
+      intakeMotor.move_velocity(-FASTER_VELOCITY);
+      // HookMotor.move_velocity(-SLOWER_VELOCITY);
    } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
-      IntakeMotor.move_velocity(FASTER_VELOCITY);
-      HookMotor.move_velocity(SLOWER_VELOCITY);
+      intakeMotor.move_velocity(FASTER_VELOCITY);
+      // HookMotor.move_velocity(SLOWER_VELOCITY);
    } else {
-      IntakeMotor.brake();
-      HookMotor.brake();
+      intakeMotor.brake();
+      // HookMotor.brake();
    }
 }
 
