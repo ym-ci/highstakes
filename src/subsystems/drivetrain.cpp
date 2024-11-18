@@ -1,31 +1,32 @@
 #include "robot/drivetrain.h"
 #include "globals.h"
+
 #define DEFAULT_DELAY_LENGTH 15
 
 using namespace Robot;
 using namespace Robot::Globals;
 
-Drivetrain::DRIVE_MODE Drivetrain::driveMode = CURVATURE_DRIVE;
+Drivetrain::DRIVE_MODE Drivetrain::driveMode = ARCADE_DRIVE;
 
 bool Drivetrain::isReversed = false;
 
-Drivetrain::Drivetrain() { Drivetrain::driveMode = CURVATURE_DRIVE; }
+Drivetrain::Drivetrain() { Drivetrain::driveMode = ARCADE_DRIVE; }
 
 void Drivetrain::curveDrive() {
-   int left = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-   int right = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
+  int throttle = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+   int theta = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X);
 
-   chassis.curvature(thrustHandler(left), thrustHandler(right));
+   chassis.curvature(thrustHandler(throttle), thrustHandler(theta));
 
    pros::delay(DEFAULT_DELAY_LENGTH);
 }
 
 void Drivetrain::arcadeDrive() {
    // Arcade Measurements
-   int left = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-   int right = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
+   int throttle = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+   int theta = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X);
 
-   chassis.arcade(thrustHandler(left), thrustHandler(right), false, 0.6);
+   chassis.arcade(thrustHandler(throttle), thrustHandler(theta));
 
    pros::delay(DEFAULT_DELAY_LENGTH);
 }
@@ -58,6 +59,19 @@ void Drivetrain::run() {
 std::string Drivetrain::toggleDrive() {
    int driveMode = (Drivetrain::driveMode + 1) % (TANK_DRIVE + 1);
    return setDriveMode(driveMode);
+}
+
+std::string Drivetrain::getModeChar() {
+   switch (Drivetrain::driveMode) {
+   case CURVATURE_DRIVE:
+      return "C";
+   case ARCADE_DRIVE:
+      return "A";
+   case TANK_DRIVE:
+      return "T";
+   default:
+      return "N";
+   }
 }
 
 int Drivetrain::thrustHandler(int thrust) {

@@ -48,6 +48,10 @@ void initialize() {
    chassis.setPose(0, 0, 0);
 
    screen.selector.selector();
+
+   driveLeft.set_brake_mode(brakeMode);
+   driveRight.set_brake_mode(brakeMode);
+   drive.set_brake_mode(brakeMode);
 }
 
 /**
@@ -124,16 +128,15 @@ void opcontrol() {
       // Toggles the drivetrain orientation - can be forward or backward
       if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)) {
          std::string name = subsystem.drivetrain.toggleDrive();
-         // Output the current drive mode to the controller screen
-         controller.print(0, 0, name.c_str());
       }
       // Checks for drivetrain reversal - Changes conditions in a value handler function in the drivetrain class
       if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
          Drivetrain::isReversed = !Drivetrain::isReversed;
-         // Output the current drive mode to the controller screen
-
-         controller.print(0, 0, "reversal: %d", Drivetrain::isReversed);
       }
+
+      std::string driveMode = Drivetrain::getModeChar();
+      bool reversed = Drivetrain::isReversed;
+      controller.print(0, 0, "%s | %s", driveMode.c_str(), reversed ? "R" : "F");
 
       subsystem.drivetrain.run();
       subsystem.latch.run();

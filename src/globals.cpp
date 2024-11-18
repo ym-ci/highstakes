@@ -30,6 +30,10 @@ pros::Motor rightFront(2, pros::v5::MotorGears::green, pros::v5::MotorUnits::deg
 pros::Motor rightMid(7, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
 pros::Motor rightBack(20, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
 pros::Motor intakeMotor(11, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+
+pros::motor_brake_mode_e_t brakeMode = pros::E_MOTOR_BRAKE_BRAKE;
+
+
 // pros::Motor hookMotor(2, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
 
 // placeholder port number

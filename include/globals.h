@@ -45,6 +45,8 @@ extern pros::Motor leftBack;
 extern pros::Motor rightBack;
 extern pros::Motor leftMid;
 
+extern pros::motor_brake_mode_e_t brakeMode;
+
 extern pros::Motor rightMid;
 extern pros::Motor intakeMotor;
 // extern pros::Motor hookMotor;

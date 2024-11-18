@@ -75,6 +75,11 @@ class Drivetrain {
    static std::string toggleDrive();
 
    /**
+    * @brief Returns the current drive mode as a character.
+    */
+   static std::string getModeChar();
+
+   /**
     * @brief Toggles the orientation of the drivetrain.
     */
    static int thrustHandler(int thrust);
