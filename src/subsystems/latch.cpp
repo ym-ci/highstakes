@@ -14,3 +14,5 @@ void Latch::run() {
 Latch::Latch() { ; }
 
 void Latch::toggle() { latchControl.toggle(); }
+
+bool Latch::getState() { return latchControl.is_extended(); }

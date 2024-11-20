@@ -18,5 +18,7 @@ class Latch {
     * @brief Toggles latch state.
     */
    void toggle();
+
+   bool getState();
 };
 } // namespace Robot
