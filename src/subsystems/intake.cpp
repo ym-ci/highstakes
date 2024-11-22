@@ -2,7 +2,7 @@
 
 #include "globals.h"
 
-#define SLOWER_VELOCITY 173
+#define SLOWER_VELOCITY 175
 #define FASTER_VELOCITY 600
 
 using namespace Robot;

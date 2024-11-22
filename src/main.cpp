@@ -35,6 +35,8 @@ struct Electronics {
   Robot::Controller controllers;
 } electronic;
 
+ASSET(test_txt);
+
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
@@ -98,6 +100,7 @@ void autonomous() {
       // lateral_sensor.get_position());
       pros::lcd::print(3, "Rotation Sensor: %i",
                        horizontalSensor.get_position());
+      pros::lcd::print(4, "VEL: %f", intakeMotor.get_actual_velocity());
       pros::delay(20);
     }
   });
@@ -128,6 +131,9 @@ void opcontrol() {
     if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)) {
       std::string name = subsystem.drivetrain.toggleDrive();
     }
+    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)) {
+      chassis.follow(test_txt, 15, 2000, true, false);
+    }
     // Checks for drivetrain reversal - Changes conditions in a value handler
     // function in the drivetrain class
     if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
@@ -137,8 +143,12 @@ void opcontrol() {
     std::string driveMode = Drivetrain::getModeChar();
     bool reversed = Drivetrain::isReversed;
     bool latchEngaged = subsystem.latch.getState();
-    controller.print(0, 0, "%s | %s | %s", driveMode.c_str(),
-                     reversed ? "R" : "F", latchEngaged ? "L" : "U");
+    // pros::lcd::print(4, "VEL: %f", intakeMotor.get_actual_velocity());
+    // controller.print(0, 0, "%s | %s | %s | %f", driveMode.c_str(),
+    //                  reversed ? "R" : "F", latchEngaged ? "L" : "U",
+    //                   intakeMotor.get_actual_velocity()
+    //                  );
+    controller.print(0,0,"%f",intakeMotor.get_actual_velocity());
 
     subsystem.drivetrain.run();
     subsystem.latch.run();
