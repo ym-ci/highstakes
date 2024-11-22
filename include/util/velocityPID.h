@@ -13,7 +13,7 @@ private:
     const float kV;
     lemlib::PID controller;
 
-    uint16_t feedforward( float target );
+    float feedforward( float target );
 
 public:
     VelocityPID( float kP, float kI, float kD, float windupRange = 0, bool signFlipReset = false, float kV = 0 );
