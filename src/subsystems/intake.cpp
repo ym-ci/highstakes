@@ -20,9 +20,9 @@ Intake::Intake() {
 void Intake::run() {
 
    double currentVelocity = intakeMotor.get_actual_velocity();
-   if (currentVelocity != 0) {
-      std::cout << " Current Velocity: " << currentVelocity << std::endl;
-   }
+   // if (currentVelocity != 0) {
+   //    std::cout << " Current Velocity: " << currentVelocity << std::endl;
+   // }
    if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
       // intakeMotor.move_velocity(-FASTER_VELOCITY);
       float val = intakePID.update(-SLOWER_VELOCITY, currentVelocity) * 1000;
