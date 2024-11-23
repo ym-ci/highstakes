@@ -39,7 +39,8 @@ pros::motor_brake_mode_e_t brakeMode = pros::E_MOTOR_BRAKE_BRAKE;
 // placeholder port number
 
 pros::adi::Pneumatics latchControl('A', false);
-pros::adi::Pneumatics HangControl('B', false);
+pros::adi::Pneumatics doinkerControl('B', false);
+pros::adi::Pneumatics HangControl('C', false);
 
 // pros::Rotation lateral_sensor(16);
 pros::Rotation horizontalSensor(-10);

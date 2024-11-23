@@ -4,13 +4,13 @@
 
 #include "util/velocityPID.h"
 
-#define SLOWER_VELOCITY 177
+#define SLOWER_VELOCITY 255
 #define FASTER_VELOCITY 600
 
 using namespace Robot;
 using namespace Robot::Globals;
 
-VelocityPID intakePID(0.01, 0.0, 0.007, 0.0, false, 17.5);
+VelocityPID intakePID(0.01, 0.0, 0.007, 0.0, false, 15.5);
 
 Intake::Intake() {
    elevated = false;
@@ -25,13 +25,14 @@ void Intake::run() {
    // }
    if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
       // intakeMotor.move_velocity(-FASTER_VELOCITY);
-      float val = intakePID.update(-SLOWER_VELOCITY, currentVelocity) * 1000;
+      // float val = intakePID.update(-SLOWER_VELOCITY, currentVelocity) * 1000;
       // printf("VAL: %f\n", val);
       // std::cout << " VAL: " << val;
-      intakeMotor.move_voltage(val);
+      // intakeMotor.move_velocity(val);
+      intakeMotor.move_velocity(-SLOWER_VELOCITY);
    } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
       // intakeMotor.move_velocity(FASTER_VELOCITY);
-      intakeMotor.move_voltage(intakePID.update(SLOWER_VELOCITY, currentVelocity) * 1000);
+      intakeMotor.move_velocity(intakePID.update(SLOWER_VELOCITY, currentVelocity) * 1000);
    } else {
       intakeMotor.brake();
       // HookMotor.brake();

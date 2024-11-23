@@ -1,7 +1,8 @@
 #include "main.h"
 
-#include "electronic/controller.h"
+
 #include "globals.h"
+#include "electronic/controller.h"
 #include "pros/misc.h"
 #include "robot/drivetrain.h"
 #include "screen/selector.h"
@@ -23,6 +24,7 @@ struct RobotSubsystems {
   Robot::Drivetrain drivetrain;
   Robot::Intake intake;
   Robot::Latch latch;
+  Robot::Doinker doinker;
   // Robot::Hang hang;
 } subsystem;
 
@@ -143,15 +145,18 @@ void opcontrol() {
     std::string driveMode = Drivetrain::getModeChar();
     bool reversed = Drivetrain::isReversed;
     bool latchEngaged = subsystem.latch.getState();
-    // pros::lcd::print(4, "VEL: %f", intakeMotor.get_actual_velocity());
-    // controller.print(0, 0, "%s | %s | %s | %f", driveMode.c_str(),
-    //                  reversed ? "R" : "F", latchEngaged ? "L" : "U",
-    //                   intakeMotor.get_actual_velocity()
-    //                  );
-    controller.print(0,0,"%f",intakeMotor.get_actual_velocity());
+    bool doinkerEngaged = subsystem.doinker.getState();
+    pros::lcd::print(4, "VEL: %f", intakeMotor.get_actual_velocity());
+    controller.print(0, 0, "%s | %s | %s | %s | %f", driveMode.c_str(),
+                     reversed ? "R" : "F", latchEngaged ? "L" : "U",
+                     doinkerEngaged ? "D" : "U",
+                      intakeMotor.get_actual_velocity()
+                     );
+    // controller.print(0,0,"%f",intakeMotor.get_actual_velocity());
 
     subsystem.drivetrain.run();
     subsystem.latch.run();
+    subsystem.doinker.run();
     // subsystem.hang.run();
 
     // Intake controller - uses R1 to pull in and L1 to push out, and stops if

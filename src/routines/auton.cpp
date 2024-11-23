@@ -1,4 +1,4 @@
-#include "robot/auton.h"
+   #include "robot/auton.h"
 #include "main.h" // IWYU pragma: export
 
 // https://github.com/calhighrobotics/over_under_b/blob/main/src/routines/auton.cpp#L190
