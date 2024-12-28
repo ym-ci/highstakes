@@ -4,7 +4,7 @@
 
 #include "util/velocityPID.h"
 
-#define SLOWER_VELOCITY 255
+#define SLOWER_VELOCITY 425
 #define FASTER_VELOCITY 600
 
 using namespace Robot;

@@ -29,7 +29,7 @@ pros::Motor leftBack(-18, pros::v5::MotorGears::green, pros::v5::MotorUnits::deg
 pros::Motor rightFront(2, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
 pros::Motor rightMid(7, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
 pros::Motor rightBack(20, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
-pros::Motor intakeMotor(11, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+pros::Motor intakeMotor(11, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
 
 pros::motor_brake_mode_e_t brakeMode = pros::E_MOTOR_BRAKE_BRAKE;
 
