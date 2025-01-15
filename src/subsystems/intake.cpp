@@ -10,36 +10,31 @@
 using namespace Robot;
 using namespace Robot::Globals;
 
-VelocityPID intakePID(0.01, 0.0, 0.007, 0.0, false, 15.5);
-
 Intake::Intake() {
    elevated = false;
-   alliance_color = false;
 }
 
 void Intake::run() {
+   bool conveyorFwd = controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1);
+   bool conveyorRev = controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1);
+   bool intakeFwd = controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2) || conveyorFwd;
+   bool intakeRev = controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2) || conveyorRev;
 
-   double currentVelocity = intakeMotor.get_actual_velocity();
-   // if (currentVelocity != 0) {
-   //    std::cout << " Current Velocity: " << currentVelocity << std::endl;
-   // }
-   if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-      // intakeMotor.move_velocity(-FASTER_VELOCITY);
-      // float val = intakePID.update(-SLOWER_VELOCITY, currentVelocity) * 1000;
-      // printf("VAL: %f\n", val);
-      // std::cout << " VAL: " << val;
-      // intakeMotor.move_velocity(val);
+   if (intakeFwd) {
       intakeMotor.move_velocity(-SLOWER_VELOCITY);
-   } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
-      // intakeMotor.move_velocity(FASTER_VELOCITY);
-      intakeMotor.move_velocity(intakePID.update(SLOWER_VELOCITY, currentVelocity) * 1000);
+   } else if (intakeRev) {
+      intakeMotor.move_velocity(SLOWER_VELOCITY);
    } else {
       intakeMotor.brake();
-      // HookMotor.brake();
+   }
+
+   if (conveyorFwd) {
+      conveyorMotor.move_velocity(FASTER_VELOCITY);
+   } else if (conveyorRev) {
+      conveyorMotor.move_velocity(-FASTER_VELOCITY);
+   } else {
+      conveyorMotor.brake();
    }
 }
 
 void Intake::toggle() { elevated = !elevated; }
-
-// Vision sensor only works with intake, therefore it should not on
-void Intake::checkStop() {}

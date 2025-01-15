@@ -15,12 +15,6 @@ class Intake {
     */
    void run();
 
-   /**
-    * @brief Checks whether the intake should stop to skip the ring depending on color.
-    * It is the embodiment of vision sensor usage in this codebase.
-    */
-   void checkStop();
-
    Intake();
 
    /**
@@ -30,10 +24,5 @@ class Intake {
 
  private:
    bool elevated;
-
-   /**
-    * @brief blue is false, red is true.
-    */
-   bool alliance_color;
 };
 } // namespace Robot

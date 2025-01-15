@@ -40,18 +40,16 @@ extern pros::Controller partner;
 extern pros::Controller controller;
 
 extern pros::Motor rightFront;
+extern pros::Motor rightBack;
 extern pros::Motor leftFront;
 extern pros::Motor leftBack;
-extern pros::Motor rightBack;
-extern pros::Motor leftMid;
 
 extern pros::motor_brake_mode_e_t brakeMode;
 
-extern pros::Motor rightMid;
 extern pros::Motor intakeMotor;
+extern pros::Motor conveyorMotor;
 // extern pros::Motor hookMotor;
 
-extern pros::MotorGroup punchers;
 extern pros::MotorGroup driveLeft;
 extern pros::MotorGroup driveRight;
 // Used as a motor group meant to be passed into lemlib, a full drivetrain
@@ -94,7 +92,6 @@ extern pros::adi::DigitalIn drivetrainToggleSwitch;
 extern pros::adi::DigitalIn autonToggleSwitch;
 
 extern pros::adi::Pneumatics latchControl;
-extern pros::adi::Pneumatics doinkerControl;
 extern pros::adi::Pneumatics HangControl;
 
 } // namespace Globals

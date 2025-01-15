@@ -23,13 +23,12 @@ namespace Globals {
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 pros::Controller partner(pros::E_CONTROLLER_PARTNER);
 
-pros::Motor leftFront(-14, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
-pros::Motor leftMid(-16, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
-pros::Motor leftBack(-18, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
-pros::Motor rightFront(2, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
-pros::Motor rightMid(7, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
-pros::Motor rightBack(20, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
-pros::Motor intakeMotor(11, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
+pros::Motor leftFront(-16, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+pros::Motor leftBack(-19, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+pros::Motor rightFront(3, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+pros::Motor rightBack(9, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+pros::Motor intakeMotor(6, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+pros::Motor conveyorMotor(14, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
 
 pros::motor_brake_mode_e_t brakeMode = pros::E_MOTOR_BRAKE_BRAKE;
 
@@ -38,17 +37,15 @@ pros::motor_brake_mode_e_t brakeMode = pros::E_MOTOR_BRAKE_BRAKE;
 
 // placeholder port number
 
-pros::adi::Pneumatics latchControl('A', false);
-pros::adi::Pneumatics doinkerControl('B', false);
-pros::adi::Pneumatics HangControl('C', false);
+pros::adi::Pneumatics latchControl('H', false);
 
 // pros::Rotation lateral_sensor(16);
-pros::Rotation horizontalSensor(-10);
+pros::Rotation horizontalSensor(-7);
 
-pros::Imu imu(5);
+pros::Imu imu(1);
 
 // Vision sensor configuration
-pros::Vision colorSensor(3);
+pros::Vision colorSensor(5);
 
 pros::vision_signature_s_t RED_SIG =
     pros::c::vision_signature_from_utility(1, -4653, -3619, -4136, 9831, 11725, 10778, 2.5, 0);
@@ -59,10 +56,9 @@ pros::vision_signature_s_t BLUE_DARK_SIG =
     pros::c::vision_signature_from_utility(3, -4793, -4173, -4483, 1069, 2765, 1917, 3, 0);
 
 // Pros motor groups - most used by lemlib
-pros::MotorGroup driveLeft({leftFront.get_port(), leftMid.get_port(), leftBack.get_port()});
-pros::MotorGroup driveRight({rightFront.get_port(), rightMid.get_port(), rightBack.get_port()});
-pros::MotorGroup drive({leftFront.get_port(), rightFront.get_port(), leftMid.get_port(), rightMid.get_port(),
-                         leftBack.get_port(), rightBack.get_port()});
+pros::MotorGroup driveLeft({leftFront.get_port(), leftBack.get_port()});
+pros::MotorGroup driveRight({rightFront.get_port(), rightBack.get_port()});
+pros::MotorGroup drive({leftFront.get_port(), rightFront.get_port(), leftBack.get_port(), rightBack.get_port()});
 
 // Lemlib objects - Used by lemlib drive and odometry functions
 lemlib::TrackingWheel horizontalTrackingWheel(
