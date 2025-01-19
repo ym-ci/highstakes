@@ -24,10 +24,10 @@ pros::Controller controller(pros::E_CONTROLLER_MASTER);
 pros::Controller partner(pros::E_CONTROLLER_PARTNER);
 
 pros::Motor leftFront(-16, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
-pros::Motor leftBack(-19, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+pros::Motor leftBack(-20, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
 pros::Motor rightFront(3, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
 pros::Motor rightBack(9, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
-pros::Motor intakeMotor(6, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+pros::Motor intakeMotor(1, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
 pros::Motor conveyorMotor(14, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
 
 pros::motor_brake_mode_e_t brakeMode = pros::E_MOTOR_BRAKE_BRAKE;
@@ -42,7 +42,7 @@ pros::adi::Pneumatics latchControl('H', false);
 // pros::Rotation lateral_sensor(16);
 pros::Rotation horizontalSensor(-7);
 
-pros::Imu imu(1);
+pros::Imu imu(6 );
 
 // Vision sensor configuration
 pros::Vision colorSensor(5);

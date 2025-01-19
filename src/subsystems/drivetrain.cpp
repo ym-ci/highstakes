@@ -13,7 +13,7 @@ bool Drivetrain::isReversed = false;
 Drivetrain::Drivetrain() { Drivetrain::driveMode = ARCADE_DRIVE; }
 
 void Drivetrain::curveDrive() {
-  int throttle = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+   int throttle = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
    int theta = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X);
 
    chassis.curvature(thrustHandler(throttle), thrustHandler(theta));
@@ -24,7 +24,7 @@ void Drivetrain::curveDrive() {
 void Drivetrain::arcadeDrive() {
    // Arcade Measurements
    int throttle = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-   int theta = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X);
+   int theta = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X) * 0.80;
 
    chassis.arcade(thrustHandler(throttle), thrustHandler(theta));
 
@@ -57,8 +57,16 @@ void Drivetrain::run() {
 
 // Cycle through each drivetrain control mode, overflows back to 0
 std::string Drivetrain::toggleDrive() {
-   int driveMode = (Drivetrain::driveMode + 1) % (TANK_DRIVE + 1);
-   return setDriveMode(driveMode);
+   // int driveMode = (Drivetrain::driveMode + 1) % (TANK_DRIVE + 1);
+   // cycle between tank and arcade
+   if (Drivetrain::driveMode == TANK_DRIVE) {
+      Drivetrain::driveMode = ARCADE_DRIVE;
+      return "Arcade Drive";
+   } else {
+      Drivetrain::driveMode = TANK_DRIVE;
+      return "Tank Drive";
+   }
+   // return setDriveMode(driveMode);
 }
 
 std::string Drivetrain::getModeChar() {

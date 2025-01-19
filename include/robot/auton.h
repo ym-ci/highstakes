@@ -103,5 +103,8 @@ class Autonomous {
     * @param latch The reference to the `Latch` object.
     */
    void auton5(Intake &intake, Latch &latch);
+
+   void genericLeft(Intake &intake, Latch &latch);
+   void genericRight(Intake &intake, Latch &latch);
 };
 } // namespace Robot

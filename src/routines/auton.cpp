@@ -1,4 +1,5 @@
-   #include "robot/auton.h"
+#include "robot/auton.h"
+#include "globals.h"
 #include "main.h" // IWYU pragma: export
 
 // https://github.com/calhighrobotics/over_under_b/blob/main/src/routines/auton.cpp#L190
@@ -9,20 +10,37 @@ using namespace Robot::Globals;
 Autonomous::AUTON_ROUTINE Autonomous::auton = RED_LEFT;
 std::string Autonomous::autonName;
 
+// -150, 60 -> -60, 0 
+// Delta = (90, 60)
+void Autonomous::genericLeft(Intake &intake, Latch &latch) {
+   chassis.setPose(0,0,0); // start
+   chassis.moveToPoint(90, 60, 1000);
+}
+
+void Autonomous::genericRight(Intake &intake, Latch &latch) {
+   chassis.setPose(0,0,0); // start
+   chassis.moveToPoint(-90, 60, 1000);
+}
+
 // Red Left
-void Autonomous::auton1(Intake &intake, Latch &latch) {}
+void Autonomous::auton1(Intake &intake, Latch &latch) {
+   genericLeft(intake, latch);
+}
 
 // Red Right
-void Autonomous::auton2(Intake &intake, Latch &latch) {}
+void Autonomous::auton2(Intake &intake, Latch &latch) {
+   genericRight(intake, latch);
+}
 
-// Blue left
-void Autonomous::auton3(Intake &intake, Latch &latch) {}
+// Blue Left
+void Autonomous::auton3(Intake &intake, Latch &latch) {
+   genericLeft(intake, latch);
+}
 
-/*
- * @todo Flesh out this method before the competition in order to make it a full
- * solo awp autonomous. Blue right
- */
-void Autonomous::auton4(Intake &intake, Latch &latch) {}
+// Blue Right
+void Autonomous::auton4(Intake &intake, Latch &latch) {
+   genericRight(intake, latch);
+}
 
 void Autonomous::auton5(Intake &intake, Latch &latch) {
    // Autonomous routine for the Skills challenge

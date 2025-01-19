@@ -36,6 +36,8 @@ struct Electronics {
   Robot::Controller controllers;
 } electronic;
 
+bool comp = false;
+
 ASSET(test_txt);
 
 /**
@@ -74,7 +76,10 @@ void disabled() {}
  * This task will exit when the robot is enabled and autonomous or opcontrol
  * starts.<asd></asd>
  */
-void competition_initialize() {}
+void competition_initialize() {
+  screen.selector.selector();
+  comp = true;
+}
 
 /**6
  * Runs the user autonomous code. This function will be started in its own task
@@ -93,19 +98,19 @@ void autonomous() {
   pros::Task screen_task([&]() {
     while (true) {
       // print robot location to the brain screen
-      pros::lcd::print(0, "X: %f", chassis.getPose().x);          // x
-      pros::lcd::print(1, "Y: %f", chassis.getPose().y);          // y
-      pros::lcd::print(2, "Theta: %f", chassis.getPose().theta);  // heading
-      // delay to save resources
-      // pros::lcd::print(3, "Rotation Sensor: %i",
-      // lateral_sensor.get_position());
-      pros::lcd::print(3, "Rotation Sensor: %i",
-                       horizontalSensor.get_position());
-      pros::lcd::print(4, "VEL: %f", intakeMotor.get_actual_velocity());
+      // array of lines
+      int i = 0;
+      pros::lcd::print(i++, "AUTON RUNNING");
+      pros::lcd::print(i++, "X: %f", chassis.getPose().x);
+      pros::lcd::print(i++, "Y: %f", chassis.getPose().y);
+      pros::lcd::print(i++, "Theta: %f", chassis.getPose().theta);
+      pros::lcd::print(i++, "VEL: %f", intakeMotor.get_actual_velocity());
       pros::delay(20);
     }
   });
 
+  // chassis.setPose(0,0,0);
+  // chassis.moveToPoint(0, 10, 500);
   subsystem.autonomous.autoDrive(subsystem.intake, subsystem.latch);
 }
 
@@ -125,15 +130,12 @@ void autonomous() {
 void opcontrol() {
   while (true) {
     // Calls to event handling functions.
-    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN) && !comp) {
       autonomous();
     }
     // Toggles the drivetrain orientation - can be forward or backward
     if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)) {
       std::string name = subsystem.drivetrain.toggleDrive();
-    }
-    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)) {
-      chassis.follow(test_txt, 15, 2000, true, false);
     }
     // Checks for drivetrain reversal - Changes conditions in a value handler
     // function in the drivetrain class
