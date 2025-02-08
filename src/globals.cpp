@@ -88,8 +88,8 @@ lemlib::OdomSensors sensors{
 
 // forward/backward PID
 // lateral PID controller
-lemlib::ControllerSettings lateralController(10,  // proportional gain (kP)
-                                              0,   // integral gain (kI)
+lemlib::ControllerSettings lateralController(17,  // proportional gain (kP)
+                                              0.5,   // integral gain (kI)
                                               4.5, // derivative gain (kD)
                                               3,   // anti windup
                                               1,   // small error range, in inches

@@ -16,3 +16,5 @@ Latch::Latch() { ; }
 void Latch::toggle() { latchControl.toggle(); }
 
 bool Latch::getState() { return latchControl.is_extended(); }
+void Latch::extend() { latchControl.extend(); }
+void Latch::retract() { latchControl.retract(); }

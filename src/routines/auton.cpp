@@ -1,6 +1,8 @@
 #include "robot/auton.h"
 #include "globals.h"
 #include "main.h" // IWYU pragma: export
+#include "robot/intake.h"
+#include "robot/latch.h"
 
 // https://github.com/calhighrobotics/over_under_b/blob/main/src/routines/auton.cpp#L190
 
@@ -23,27 +25,57 @@ void Autonomous::genericRight(Intake &intake, Latch &latch) {
 }
 
 // Red Left
-void Autonomous::auton1(Intake &intake, Latch &latch) {
+void Autonomous::redLeftAuton(Intake &intake, Latch &latch) {
    genericLeft(intake, latch);
 }
 
 // Red Right
-void Autonomous::auton2(Intake &intake, Latch &latch) {
+void Autonomous::redRightAuton(Intake &intake, Latch &latch) {
    genericRight(intake, latch);
 }
 
 // Blue Left
-void Autonomous::auton3(Intake &intake, Latch &latch) {
+void Autonomous::blueLeftAuton(Intake &intake, Latch &latch) {
    genericLeft(intake, latch);
 }
 
 // Blue Right
-void Autonomous::auton4(Intake &intake, Latch &latch) {
+void Autonomous::blueRightAuton(Intake &intake, Latch &latch) {
    genericRight(intake, latch);
 }
 
-void Autonomous::auton5(Intake &intake, Latch &latch) {
+void Autonomous::skillsAuton(Intake &intake, Latch &latch) {
    // Autonomous routine for the Skills challenge
+   chassis.setPose(0,0,300); // start
+   // Grab MoGo
+   chassis.moveToPose(13, -7.25, 300, 1000, {.forwards = false}, false);
+   latch.extend();
+   pros::delay(100);   
+   intake.moveAll();
+   intake.cycle();
+   // Grab Second Ring
+   chassis.turnToHeading(180, 1000);
+   chassis.moveToPoint(14, -27, 1000, {}, false);
+   intake.cycle();
+   // Grab Third Ring
+   chassis.moveToPoint(14, -40, 1000, {}, false);
+   intake.cycle();
+   pros::delay(500);
+   // Fourth Ring
+   chassis.moveToPoint(11.5, -16.7, 1000, {.forwards=false}, false);
+   chassis.turnToHeading(215, 1000);
+   chassis.moveToPoint(2.2, -29.5, 2000, {}, false);
+   pros::delay(500);
+   intake.cycle();
+   // go to corner
+   chassis.moveToPoint(11.5, -16.7, 1000, {.forwards=false}, false);
+   latch.retract();
+   chassis.moveToPose(-2, -42, 30, 4000, {.forwards=false}, false);
+   // latch.retract();
+   // pros::delay(10);
+   chassis.moveToPoint(11.5, -16.7, 1000, {}, false);
+   pros::delay(10000);
+
 }
 
 // Takes in two parameters: The autonomous value as well as the puncher object.
@@ -52,19 +84,19 @@ void Autonomous::autoDrive(Intake &intake, Latch &latch) {
    // autonomous Compare the current auton value to run the auton routine
    switch (Autonomous::auton) {
    case RED_LEFT:
-      auton1(intake, latch);
+      redLeftAuton(intake, latch);
       break;
    case RED_RIGHT:
-      auton2(intake, latch);
+      redRightAuton(intake, latch);
       break;
    case BLUE_LEFT:
-      auton3(intake, latch);
+      blueLeftAuton(intake, latch);
       break;
    case BLUE_RIGHT:
-      auton4(intake, latch);
+      blueRightAuton(intake, latch);
       break;
    case SKILLS:
-      auton5(intake, latch);
+      skillsAuton(intake, latch);
       break;
    }
 }

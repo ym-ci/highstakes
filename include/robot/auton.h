@@ -61,7 +61,7 @@ class Autonomous {
     * strategy. It contains the specific actions and movements required for this
     * strategy.
     */
-   void auton1(Intake &intake, Latch &latch);
+   void redLeftAuton(Intake &intake, Latch &latch);
 
    /**
     * @brief Runs the autonomous path for the near side offensive game strategy.
@@ -70,7 +70,7 @@ class Autonomous {
     * strategy. It contains the specific actions and movements required for this
     * strategy.
     */
-   void auton2(Intake &intake, Latch &latch);
+   void redRightAuton(Intake &intake, Latch &latch);
 
    /**
     * @brief Runs the puncher routine for the Skills Challenge.
@@ -81,7 +81,7 @@ class Autonomous {
     *
     * @param puncher A reference to the Puncher object.
     */
-   void auton3(Intake &intake, Latch &latch);
+   void blueLeftAuton(Intake &intake, Latch &latch);
 
    /**
     * @brief Runs the autonomous path for the far side offensive game strategy.
@@ -91,7 +91,7 @@ class Autonomous {
     * @todo Make the autonomous more fleshed out, building it properly for the
     * competition
     */
-   void auton4(Intake &intake, Latch &latch);
+   void blueRightAuton(Intake &intake, Latch &latch);
 
    /**
     * Executes the Skills challenge autonomous.
@@ -102,7 +102,7 @@ class Autonomous {
     * @param intake The reference to the `Intake` object.
     * @param latch The reference to the `Latch` object.
     */
-   void auton5(Intake &intake, Latch &latch);
+   void skillsAuton(Intake &intake, Latch &latch);
 
    void genericLeft(Intake &intake, Latch &latch);
    void genericRight(Intake &intake, Latch &latch);

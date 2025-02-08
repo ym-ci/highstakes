@@ -7,18 +7,19 @@ namespace Robot {
  */
 class Latch {
  public:
+   Latch();
    /**
     * @brief Runs latching mechanism.
     */
    void run();
-
-   Latch();
 
    /**
     * @brief Toggles latch state.
     */
    void toggle();
 
-   bool getState();
+    bool getState();
+    void extend();
+  void retract();
 };
 } // namespace Robot

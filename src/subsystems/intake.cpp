@@ -9,8 +9,7 @@
 using namespace Robot;
 using namespace Robot::Globals;
 
-Intake::Intake() {
-   elevated = false;
+Intake::Intake() : elevated(false) {
 }
 
 void Intake::run() {
@@ -34,6 +33,49 @@ void Intake::run() {
    } else {
       conveyorMotor.brake();
    }
+}
+
+void Intake::moveConveyor(int velocity) {
+   conveyorMotor.move_velocity(velocity);
+}
+
+void Intake::moveIntake(int velocity) {
+   intakeMotor.move_velocity(velocity);
+}
+
+void Intake::stopIntake() {
+   intakeMotor.move_velocity(0);
+}
+
+void Intake::stopConveyor() {
+   conveyorMotor.move_velocity(0);
+}
+
+void Intake::moveAll(int intakeVelocity, int conveyorVelocity) {
+   moveIntake(intakeVelocity);
+   moveConveyor(conveyorVelocity);
+}
+
+void Intake::moveAll(){
+   moveIntake(-SLOWER_VELOCITY);
+   moveConveyor(FASTER_VELOCITY);
+}
+
+void Intake::reverseAll(){
+   moveIntake(SLOWER_VELOCITY);
+   moveConveyor(-FASTER_VELOCITY);
+}
+
+void Intake::cycle() {
+   pros::delay(750);
+   reverseAll();
+   pros::delay(200);
+   moveAll();
+}
+
+void Intake::stopAll() {
+   stopIntake();
+   stopConveyor();
 }
 
 void Intake::toggle() { elevated = !elevated; }
