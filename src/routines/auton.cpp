@@ -46,33 +46,32 @@ void Autonomous::blueRightAuton(Intake &intake, Latch &latch) {
 
 void Autonomous::skillsAuton(Intake &intake, Latch &latch) {
    // Autonomous routine for the Skills challenge
+   // takes 30 seconds
    chassis.setPose(0,0,300); // start
    // Grab MoGo
-   chassis.moveToPose(13, -7.25, 300, 1000, {.forwards = false}, false);
+   chassis.moveToPose(13.5, -7.25, 300, 1000, {.forwards = false}, false);
    latch.extend();
    pros::delay(100);   
    intake.moveAll();
    intake.cycle();
    // Grab Second Ring
    chassis.turnToHeading(180, 1000);
-   chassis.moveToPoint(14, -27, 1000, {}, false);
+   chassis.moveToPoint(15, -27, 1000, {}, false);
    intake.cycle();
    // Grab Third Ring
-   chassis.moveToPoint(14, -40, 1000, {}, false);
+   chassis.moveToPoint(15, -40, 1000, {}, false);
    intake.cycle();
-   pros::delay(500);
    // Fourth Ring
    chassis.moveToPoint(11.5, -16.7, 1000, {.forwards=false}, false);
    chassis.turnToHeading(215, 1000);
    chassis.moveToPoint(2.2, -29.5, 2000, {}, false);
-   pros::delay(500);
    intake.cycle();
    // go to corner
    chassis.moveToPoint(11.5, -16.7, 1000, {.forwards=false}, false);
+   chassis.moveToPose(-2.8, -44, 30, 4000, {.forwards=false});
+   // pros::delay(500);
+   intake.cycle();
    latch.retract();
-   chassis.moveToPose(-2, -42, 30, 4000, {.forwards=false}, false);
-   // latch.retract();
-   // pros::delay(10);
    chassis.moveToPoint(11.5, -16.7, 1000, {}, false);
    pros::delay(10000);
 
