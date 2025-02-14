@@ -63,13 +63,20 @@ void Intake::moveAll(){
 
 void Intake::reverseAll(){
    moveIntake(SLOWER_VELOCITY);
-   moveConveyor(-FASTER_VELOCITY);
+   // moveConveyor(-FASTER_VELOCITY);
 }
 
 void Intake::cycle() {
    pros::delay(750);
    reverseAll();
    pros::delay(200);
+   moveAll();
+}
+
+void Intake::longCycle() {
+   pros::delay(750);
+   reverseAll();
+   pros::delay(750);
    moveAll();
 }
 

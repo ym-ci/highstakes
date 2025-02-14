@@ -8,32 +8,32 @@ namespace Robot {
 class Intake {
  public:
    Intake();
+   
    /**
     * @brief Runs the main function of the intake system.
-    *
-    * Takes optional user input to control the direction of the intake system in
-    * autonomous.
     */
    void run();
+
+   // Basic motor control methods
+   void moveConveyor(int velocity);
+   void moveIntake(int velocity);
+   void stopIntake();
+   void stopConveyor();
+   void stopAll();
+
+   // Combined movement methods
+   void moveAll(int intakeVelocity, int conveyorVelocity);
+   void moveAll();
+   void reverseAll();
+
+   // Cycling methods
+   void cycle();
+   void longCycle();
 
    /**
     * @brief Toggles intake elevation.
     */
    void toggle();
-
-   // Added declarations for additional functionalities
-   void moveConveyor(int velocity);
-   void moveIntake(int velocity);
-   void stopIntake();
-   void stopConveyor();
-
-   // New declarations for the added methods
-   void moveAll(int intakeVelocity, int conveyorVelocity);
-   void moveAll();
-   void reverseAll();
-   void stopAll();
-   // Added declaration for the cycle method.
-   void cycle();
 
  private:
    bool elevated;

@@ -40,8 +40,8 @@ pros::motor_brake_mode_e_t brakeMode = pros::E_MOTOR_BRAKE_BRAKE;
 pros::adi::Pneumatics latchControl('H', false);
 pros::adi::Pneumatics doinkerControl('G', false);
 
-// pros::Rotation lateral_sensor(16);
-pros::Rotation horizontalSensor(-7);
+pros::Rotation lateral_sensor(-10);
+// pros::Rotation horizontalSensor(-7);
 
 pros::Imu imu(6 );
 
@@ -62,11 +62,11 @@ pros::MotorGroup driveRight({rightFront.get_port(), rightBack.get_port()});
 pros::MotorGroup drive({leftFront.get_port(), rightFront.get_port(), leftBack.get_port(), rightBack.get_port()});
 
 // Lemlib objects - Used by lemlib drive and odometry functions
-lemlib::TrackingWheel horizontalTrackingWheel(
-                                        &horizontalSensor, 
-                                  lemlib::Omniwheel::NEW_2,
-                                       1);
-// lemlib::TrackingWheel vertical_tracking_wheel(&lateral_sensor, lemlib::Omniwheel::NEW_2, -1.45);
+// lemlib::TrackingWheel horizontalTrackingWheel(
+//                                         &horizontalSensor, 
+//                                   lemlib::Omniwheel::NEW_2,
+//                                        1);
+lemlib::TrackingWheel vertical_tracking_wheel(&lateral_sensor, lemlib::Omniwheel::NEW_2, -3.5);
 
 // Describes the lemlib objects that are used to control the autonomous
 // functions of the robot.
@@ -80,30 +80,30 @@ lemlib::Drivetrain drivetrain{
 };
 
 lemlib::OdomSensors sensors{
-    nullptr,   // vertical tracking wheel 1
+    &vertical_tracking_wheel,   // vertical tracking wheel 1
     nullptr,                    // vertical tracking wheel 2
-    &horizontalTrackingWheel, // horizontal tracking wheel 1
+    nullptr, // horizontal tracking wheel 1
     nullptr,                    // we don't have a second tracking wheel, so we set it to nullptr
     &imu            // inertial sensor
 };
 
 // forward/backward PID
 // lateral PID controller
-lemlib::ControllerSettings lateralController(20,  // proportional gain (kP)
-                                              2,   // integral gain (kI)
-                                              4.5, // derivative gain (kD)
+lemlib::ControllerSettings lateralController(14,  // proportional gain (kP)
+                                              0.2,   // integral gain (kI)
+                                              0.1, // derivative gain (kD)
                                               3,   // anti windup
                                               1,   // small error range, in inches
                                               100, // small error range timeout, in milliseconds
                                               3,   // large error range, in inches
                                               500, // large error range timeout, in milliseconds
-                                              25   // maximum acceleration (slew)
+                                              50   // maximum acceleration (slew)
 );
 
 // angular PID controller
-lemlib::ControllerSettings angularController(2,    // proportional gain (kP)
+lemlib::ControllerSettings angularController(2.5,    // proportional gain (kP)
                                               0,    // integral gain (kI)
-                                              10.5, // derivative gain (kD)
+                                              9.5, // derivative gain (kD)
                                               3,    // anti windup
                                               1,    // small error range, in degrees
                                               100,  // small error range timeout, in milliseconds
