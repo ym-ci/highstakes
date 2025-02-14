@@ -1,9 +1,11 @@
 #include "robot/auton.h"
 #include "globals.h"
 #include "main.h" // IWYU pragma: export
+#include "pros/rtos.hpp"
 #include "robot/intake.h"
 #include "robot/latch.h"
 #include "robot/doinker.h"
+#include <ctime>
 
 // https://github.com/calhighrobotics/over_under_b/blob/main/src/routines/auton.cpp#L190
 
@@ -73,19 +75,76 @@ void Autonomous::skillsAuton(Intake &intake, Latch &latch) {
    chassis.moveToPoint(32.47, -30.89, 2000, {}, false);
    intake.longCycle();
    // Sixth Ring
-   chassis.moveToPose(14, -20, 90, 2000, {.forwards=false}, false);
+   // chassis.moveToPose(14, -20, 90, 2000, {.forwards=false}, false);
    chassis.moveToPoint(32.6, -7.66, 2000, {}, false);
    intake.longCycle();
-
 
    // // go to corner
    chassis.moveToPoint(-0.9, -39, 10000 , {.forwards=false}, true);
    intake.longCycle();
+   intake.stopAll();
+   intake.reverseAll();
    latch.retract();
    pros::delay(300);
    chassis.waitUntilDone();
-   chassis.moveToPoint(11.5, -16.7, 1000, {}, false);
-   pros::delay(10000);
+   chassis.moveToPoint(9.5, -16.7, 1000, {.forwards = true}, false);
+   pros::delay(200);
+   
+   // Second MoGo
+   chassis.moveToPose(9.5, 49.5, 180, 4000, {.forwards = false}, true);
+   chassis.waitUntil(62);
+   latch.extend();
+   pros::delay(150);
+   chassis.waitUntilDone();
+   intake.moveAll();
+
+   // First Ring
+   chassis.turnToHeading(90, 1000);
+   chassis.moveToPoint(25, 47.5, 1000, {}, false);
+   pros::delay(150);
+   intake.cycle();
+
+   // Second Ring
+   chassis.moveToPoint(31.43, 65.87, 1000, {}, false);
+   pros::delay(150);
+   intake.cycle();
+
+   // Third Ring
+   chassis.moveToPoint(8, 69.37, 1000, {}, false);
+   pros::delay(150);
+   intake.cycle();
+
+   // Fourth Ring
+   chassis.moveToPoint(-4, 69.37, 1000, {}, false);
+   pros::delay(150);
+   intake.cycle();
+
+   // Fifth Ring
+
+   // Line up
+   chassis.moveToPoint(20.10, 68.37, 1000, {.forwards=false}, false);
+
+   // Suck it yummy
+   chassis.turnToHeading(315, 1000, {}, false);
+   chassis.moveToPoint(5, 81.41, 1000, {}, false);
+   intake.cycle();
+   intake.cycle();
+
+   // Go to corner
+   chassis.turnToHeading(130, 1000 , {}, false);
+   chassis.moveToPoint(-6.50, 82.97, 1000, {.forwards=false}, true);
+   chassis.waitUntil(0.25);
+   intake.stopAll();
+   latch.retract();
+   chassis.waitUntilDone();
+
+   
+
+
+
+   pros::delay(5000);
+
+
 
 }
 

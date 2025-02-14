@@ -89,15 +89,15 @@ lemlib::OdomSensors sensors{
 
 // forward/backward PID
 // lateral PID controller
-lemlib::ControllerSettings lateralController(14,  // proportional gain (kP)
-                                              0.2,   // integral gain (kI)
-                                              0.1, // derivative gain (kD)
+lemlib::ControllerSettings lateralController(16,  // proportional gain (kP)
+                                              1.5,   // integral gain (kI)
+                                              0.4, // derivative gain (kD)
                                               3,   // anti windup
                                               1,   // small error range, in inches
                                               100, // small error range timeout, in milliseconds
                                               3,   // large error range, in inches
                                               500, // large error range timeout, in milliseconds
-                                              50   // maximum acceleration (slew)
+                                              25   // maximum acceleration (slew)
 );
 
 // angular PID controller
