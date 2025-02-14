@@ -91,7 +91,7 @@ void Autonomous::skillsAuton(Intake &intake, Latch &latch) {
    pros::delay(200);
    
    // Second MoGo
-   chassis.moveToPose(9.5, 49.5, 180, 4000, {.forwards = false}, true);
+   chassis.moveToPose(9, 49.5, 180, 4000, {.forwards = false}, true);
    chassis.waitUntil(62);
    latch.extend();
    pros::delay(150);
@@ -100,29 +100,30 @@ void Autonomous::skillsAuton(Intake &intake, Latch &latch) {
 
    // First Ring
    chassis.turnToHeading(90, 1000);
-   chassis.moveToPoint(25, 47.5, 1000, {}, false);
-   pros::delay(150);
+   chassis.moveToPoint(25, 46, 1000, {}, false);
+   pros::delay(400);
    intake.cycle();
 
    // Second Ring
    chassis.moveToPoint(31.43, 65.87, 1000, {}, false);
-   pros::delay(150);
+   pros::delay(400);
+   intake.cycle();
    intake.cycle();
 
    // Third Ring
-   chassis.moveToPoint(8, 69.37, 1000, {}, false);
-   pros::delay(150);
+   chassis.moveToPoint(8, 66, 1000, {}, false);
+   pros::delay(400);
    intake.cycle();
 
    // Fourth Ring
-   chassis.moveToPoint(-4, 69.37, 1000, {}, false);
-   pros::delay(150);
+   chassis.moveToPoint(-4, 66, 1000, {}, false);
+   pros::delay(400);
    intake.cycle();
 
    // Fifth Ring
 
    // Line up
-   chassis.moveToPoint(20.10, 68.37, 1000, {.forwards=false}, false);
+   chassis.moveToPoint(20.10, 68, 1000, {.forwards=false}, false);
 
    // Suck it yummy
    chassis.turnToHeading(315, 1000, {}, false);
@@ -137,7 +138,7 @@ void Autonomous::skillsAuton(Intake &intake, Latch &latch) {
    intake.stopAll();
    latch.retract();
    chassis.waitUntilDone();
-
+   chassis.moveToPoint(5, 81.41, 1000, {}, false);
    
 
 
