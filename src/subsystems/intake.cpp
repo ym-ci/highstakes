@@ -76,7 +76,7 @@ void Intake::cycle() {
 void Intake::longCycle() {
    pros::delay(750);
    reverseAll();
-   pros::delay(750);
+   pros::delay(400);
    moveAll();
 }
 
