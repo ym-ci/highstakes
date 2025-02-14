@@ -3,6 +3,7 @@
 
 #include "robot/intake.h"
 #include "robot/latch.h"
+#include "robot/doinker.h"
 
 namespace Robot {
 /**

@@ -24,8 +24,10 @@ struct RobotSubsystems {
   Robot::Drivetrain drivetrain;
   Robot::Intake intake;
   Robot::Latch latch;
+  Robot::Doinker doinker;
   // Robot::Hang hang;
 } subsystem;
+
 
 struct RobotScreen {
   Robot::selector_screen selector;
@@ -141,7 +143,6 @@ void opcontrol() {
     // function in the drivetrain class
     if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
       Drivetrain::isReversed = !Drivetrain::isReversed;
-
     } 
     std::string driveMode = Drivetrain::getModeChar();
     bool reversed = Drivetrain::isReversed;
@@ -155,6 +156,7 @@ void opcontrol() {
 
     subsystem.drivetrain.run();
     subsystem.latch.run();
+    subsystem.doinker.run();
     // subsystem.hang.run();
 
     // Intake controller - uses R1 to pull in and L1 to push out, and stops if

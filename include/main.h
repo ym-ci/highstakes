@@ -34,16 +34,6 @@
  */
 #define PROS_USE_LITERALS
 
-#include "api.h"
-#include "electronic/controller.h"
-#include "globals.h"
-#include "pros/apix.h"
-#include "robot/auton.h"
-#include "robot/drivetrain.h"
-#include "robot/hang.h"
-#include "robot/intake.h"
-#include "robot/latch.h"
-
 /**
  * You should add more #includes here
  */

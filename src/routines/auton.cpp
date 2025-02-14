@@ -3,6 +3,7 @@
 #include "main.h" // IWYU pragma: export
 #include "robot/intake.h"
 #include "robot/latch.h"
+#include "robot/doinker.h"
 
 // https://github.com/calhighrobotics/over_under_b/blob/main/src/routines/auton.cpp#L190
 
