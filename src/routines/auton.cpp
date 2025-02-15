@@ -12,7 +12,7 @@
 using namespace Robot;
 using namespace Robot::Globals;
 
-Autonomous::AUTON_ROUTINE Autonomous::auton = SKILLS;
+Autonomous::AUTON_ROUTINE Autonomous::auton = RED_LEFT;
 std::string Autonomous::autonName;
 
 // -150, 60 -> -60, 0 
