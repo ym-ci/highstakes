@@ -18,18 +18,18 @@ void Intake::run() {
    bool intakeFwd = controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2) || conveyorFwd;
    bool intakeRev = controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2) || conveyorRev;
 
-   if (intakeFwd) {
-      intakeMotor.move_velocity(-SLOWER_VELOCITY);
-   } else if (intakeRev) {
+   if (intakeRev) {
       intakeMotor.move_velocity(SLOWER_VELOCITY);
+   } else if (intakeFwd) {
+      intakeMotor.move_velocity(-SLOWER_VELOCITY);
    } else {
       intakeMotor.brake();
    }
 
-   if (conveyorFwd) {
-      conveyorMotor.move_velocity(FASTER_VELOCITY);
-   } else if (conveyorRev) {
+   if (conveyorRev) {
       conveyorMotor.move_velocity(-FASTER_VELOCITY);
+   } else if (conveyorFwd) {
+      conveyorMotor.move_velocity(FASTER_VELOCITY);
    } else {
       conveyorMotor.brake();
    }
