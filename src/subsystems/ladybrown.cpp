@@ -12,7 +12,7 @@ using namespace Robot::Globals;
 
 LadyBrown::LADYBROWN_STATE LadyBrown::current_state = LadyBrown::BASE_STATE;
 
-LadyBrown::LadyBrown() : MoveToPointPID(20, 0, 0, 2, false) {
+LadyBrown::LadyBrown() : MoveToPointPID(50, 0, 0, 2, false) {
   ladyBrownMotor1.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
   ladyBrownMotor2.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 }
@@ -78,8 +78,8 @@ void LadyBrown::MoveToPoint(LADYBROWN_STATE state, int max_error, int timeout) {
 
    std::cout << "state: " << current_state << std::endl;
    constexpr double baseLocation = 0;
-   constexpr double loadLocation = 26;
-   constexpr double attackLocation = 300;
+   constexpr double loadLocation = 60;
+   constexpr double attackLocation = 330;
 
    int target;
 
