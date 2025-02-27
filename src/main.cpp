@@ -1,12 +1,12 @@
 #include "main.h"
 
-
 #include "globals.h"
 #include "electronic/controller.h"
 #include "pros/misc.h"
 #include "robot/drivetrain.h"
 #include "screen/selector.h"
 #include "screen/status.h"
+#include "robot/ladybrown.h"
 
 using namespace Robot;
 using namespace Robot::Globals;
@@ -26,6 +26,7 @@ struct RobotSubsystems {
   Robot::Latch latch;
   Robot::Doinker doinker;
   // Robot::Hang hang;
+  Robot::LadyBrown ladyBrown;
 } subsystem;
 
 
@@ -37,8 +38,6 @@ struct RobotScreen {
 struct Electronics {
   Robot::Controller controllers;
 } electronic;
-
-bool comp = false;
 
 ASSET(test_txt);
 
@@ -59,6 +58,10 @@ void initialize() {
   driveLeft.set_brake_mode(brakeMode);
   driveRight.set_brake_mode(brakeMode);
   drive.set_brake_mode(brakeMode);
+
+  colorSensor.set_signature(1, &RED_SIG);
+  colorSensor.set_signature(2, &BLUE_SIG);
+  colorSensor.set_signature(3, &BLUE_DARK_SIG);
 }
 
 /**
@@ -80,7 +83,6 @@ void disabled() {}
  */
 void competition_initialize() {
   screen.selector.selector();
-  comp = true;
 }
 
 /**6
@@ -132,18 +134,21 @@ void autonomous() {
 void opcontrol() {
   while (true) {
     // Calls to event handling functions.
-    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN) && !comp) {
-      autonomous();
+    bool comp = (pros::competition::get_status() & COMPETITION_CONNECTED) == true;
+    if (comp) {
+      if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+        autonomous();
+      }
+      // Toggles the drivetrain orientation - can be forward or backward
+      if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)) {
+        std::string name = subsystem.drivetrain.toggleDrive();
+      }
+      // Checks for drivetrain reversal - Changes conditions in a value handler
+      // function in the drivetrain class
+      if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
+        Drivetrain::isReversed = !Drivetrain::isReversed;
+      } 
     }
-    // Toggles the drivetrain orientation - can be forward or backward
-    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)) {
-      std::string name = subsystem.drivetrain.toggleDrive();
-    }
-    // Checks for drivetrain reversal - Changes conditions in a value handler
-    // function in the drivetrain class
-    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
-      Drivetrain::isReversed = !Drivetrain::isReversed;
-    } 
     std::string driveMode = Drivetrain::getModeChar();
     bool reversed = Drivetrain::isReversed;
     bool latchEngaged = subsystem.latch.getState();
@@ -157,6 +162,7 @@ void opcontrol() {
     subsystem.drivetrain.run();
     subsystem.latch.run();
     subsystem.doinker.run();
+    subsystem.ladyBrown.run();
     // subsystem.hang.run();
 
     // Intake controller - uses R1 to pull in and L1 to push out, and stops if

@@ -29,6 +29,8 @@ pros::Motor rightFront(3, pros::v5::MotorGears::green, pros::v5::MotorUnits::deg
 pros::Motor rightBack(9, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
 pros::Motor intakeMotor(1, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
 pros::Motor conveyorMotor(14, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
+pros::Motor ladyBrownMotor1(15, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+pros::Motor ladyBrownMotor2(-18, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
 
 pros::motor_brake_mode_e_t brakeMode = pros::E_MOTOR_BRAKE_BRAKE;
 
@@ -46,7 +48,7 @@ pros::Rotation lateral_sensor(-10);
 pros::Imu imu(6 );
 
 // Vision sensor configuration
-pros::Vision colorSensor(5);
+pros::Vision colorSensor(11);
 
 pros::vision_signature_s_t RED_SIG =
     pros::c::vision_signature_from_utility(1, -4653, -3619, -4136, 9831, 11725, 10778, 2.5, 0);
