@@ -2,7 +2,9 @@
 
 #include "globals.h"
 
+#include "pros/vision.h"
 #include "util/velocityPID.h"
+#include "robot/auton.h"
 
 #define SLOWER_VELOCITY 425
 #define FASTER_VELOCITY 800
@@ -13,22 +15,32 @@ Intake::Intake() : elevated(false) {
 }
 
 void Intake::run() {
-   bool conveyorFwd = controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1);
-   bool conveyorRev = controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1);
-   bool intakeFwd = controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2) || conveyorFwd;
-   bool intakeRev = controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2) || conveyorRev;
+   bool fwd = controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1);
+   bool rev = controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1);
 
-   if (intakeRev) {
+   pros::vision_object_s_t obj = colorSensor.get_by_size(0);
+   if (obj.width > 100 && false) {
+      std::cout << "Object detected: " << obj.signature << std::endl;
+      bool isRed = obj.signature == 1;
+      bool weAreRed = Autonomous::auton == Autonomous::RED_LEFT || Autonomous::auton == Autonomous::RED_RIGHT;
+      
+      bool wrongRing = (isRed && !weAreRed) || (!isRed && weAreRed);
+      if (wrongRing) {
+         // TODO: reject ring
+      }
+   }
+
+   if (rev) {
       intakeMotor.move_velocity(SLOWER_VELOCITY);
-   } else if (intakeFwd) {
+   } else if (fwd) {
       intakeMotor.move_velocity(-SLOWER_VELOCITY);
    } else {
       intakeMotor.brake();
    }
 
-   if (conveyorRev) {
+   if (rev) {
       conveyorMotor.move_velocity(-FASTER_VELOCITY);
-   } else if (conveyorFwd) {
+   } else if (fwd) {
       conveyorMotor.move_velocity(FASTER_VELOCITY);
    } else {
       conveyorMotor.brake();
