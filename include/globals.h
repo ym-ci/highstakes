@@ -44,7 +44,7 @@ extern pros::Motor rightBack;
 extern pros::Motor leftFront;
 extern pros::Motor leftBack;
 extern pros::Motor ladyBrownMotor1;
-extern pros::Motor ladyBrownMotor2;
+// extern pros::Motor ladyBrownMotor2;
 
 extern pros::motor_brake_mode_e_t brakeMode;
 

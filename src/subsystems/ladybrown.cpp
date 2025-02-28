@@ -14,7 +14,7 @@ LadyBrown::LADYBROWN_STATE LadyBrown::current_state = LadyBrown::BASE_STATE;
 
 LadyBrown::LadyBrown() : MoveToPointPID(75, 0, 0, 2, false) {
   ladyBrownMotor1.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-  ladyBrownMotor2.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+//   ladyBrownMotor2.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 }
 
 void LadyBrown::run(bool async, int timeout) {
@@ -71,7 +71,8 @@ void LadyBrown::run(bool async, int timeout) {
 int LadyBrown::get_target() { return target; }
 
 double LadyBrown::get_position() {
-  return (ladyBrownMotor1.get_position() + ladyBrownMotor2.get_position()) / 2;
+//   return (ladyBrownMotor1.get_position() + ladyBrownMotor2.get_position()) / 2;
+   return ladyBrownMotor1.get_position();
 }
 
 void LadyBrown::MoveToPoint(LADYBROWN_STATE state, int max_error, int timeout) {
@@ -117,14 +118,14 @@ void LadyBrown::MoveToPoint(LADYBROWN_STATE state, int max_error, int timeout) {
 
          if (std::abs(error) < max_error || timer.isDone()) {
             ladyBrownMotor1.brake();
-            ladyBrownMotor2.brake();
+            // ladyBrownMotor2.brake();
             LadyBrown::isPIDRunning = false;
             LadyBrown::current_state = state;
             break;
          }
 
          ladyBrownMotor1.move_voltage(motor_voltage);
-         ladyBrownMotor2.move_voltage(motor_voltage);
+         // ladyBrownMotor2.move_voltage(motor_voltage);
          LadyBrown::isPIDRunning = true;
          pros::delay(20);
       }

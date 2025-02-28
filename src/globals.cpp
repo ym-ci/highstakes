@@ -29,8 +29,8 @@ pros::Motor rightFront(3, pros::v5::MotorGears::green, pros::v5::MotorUnits::deg
 pros::Motor rightBack(9, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
 pros::Motor intakeMotor(1, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
 pros::Motor conveyorMotor(14, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
-pros::Motor ladyBrownMotor1(15, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
-pros::Motor ladyBrownMotor2(-18, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+// pros::Motor ladyBrownMotor1(15, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
+pros::Motor ladyBrownMotor1(-18, pros::v5::MotorGears::green, pros::v5::MotorUnits::degrees);
 
 pros::motor_brake_mode_e_t brakeMode = pros::E_MOTOR_BRAKE_BRAKE;
 
