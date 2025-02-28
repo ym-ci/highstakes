@@ -135,8 +135,8 @@ void opcontrol() {
   while (true) {
     // Calls to event handling functions.
     bool comp = (pros::competition::get_status() & COMPETITION_CONNECTED) == true;
-    if (comp) {
-      if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+    if (!comp) {
+      if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)) {
         autonomous();
       }
       // Toggles the drivetrain orientation - can be forward or backward
@@ -147,15 +147,19 @@ void opcontrol() {
       // function in the drivetrain class
       if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
         Drivetrain::isReversed = !Drivetrain::isReversed;
-      } 
+      }
+    }
+    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+      subsystem.intake.setFilterState(!subsystem.intake.getFilterState());
     }
     std::string driveMode = Drivetrain::getModeChar();
     bool reversed = Drivetrain::isReversed;
     bool latchEngaged = subsystem.latch.getState();
     pros::lcd::print(4, "VEL: %f", intakeMotor.get_actual_velocity());
-    controller.print(0, 0, "%s | %s | %s | %f", driveMode.c_str(),
-                     reversed ? "R" : "F", latchEngaged ? "L" : "U",
-                      intakeMotor.get_actual_velocity()
+    controller.print(0, 0, "%s | %s | %s | %f | %s", driveMode.c_str(),
+                      reversed ? "R" : "F", latchEngaged ? "L" : "U",
+                      intakeMotor.get_actual_velocity(),
+                      subsystem.intake.getFilterState() ? "ON" : "OFF"
                      );
     // controller.print(0,0,"%f",intakeMotor.get_actual_velocity());
 

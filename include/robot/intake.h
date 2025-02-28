@@ -37,9 +37,13 @@ class Intake {
     */
    void toggle();
 
+   bool getFilterState();
+   void setFilterState(bool state);
+
  private:
    bool elevated;
    double stopPosition;
    uint32_t lastWrongRingTime;
+   bool filterState;
 };
 } // namespace Robot
