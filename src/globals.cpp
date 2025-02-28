@@ -51,12 +51,12 @@ pros::Imu imu(6 );
 pros::Vision colorSensor(11);
 
 pros::vision_signature_s_t RED_SIG =
-    pros::c::vision_signature_from_utility(1, -4653, -3619, -4136, 9831, 11725, 10778, 2.5, 0);
+    pros::c::vision_signature_from_utility(1, 9199, 11847, 10523, -3217, -1359, -2288, 2.5, 0);
 
 pros::vision_signature_s_t BLUE_SIG =
-    pros::c::vision_signature_from_utility(2, 9187, 12161, 10674, -375, 1327, 476, 2.5, 0);
-pros::vision_signature_s_t BLUE_DARK_SIG =
-    pros::c::vision_signature_from_utility(3, -4793, -4173, -4483, 1069, 2765, 1917, 3, 0);
+    pros::c::vision_signature_from_utility(2, -5099, -4103, -4601, 843, 8649, 4746, 2.5, 0);
+// pros::vision_signature_s_t BLUE_DARK_SIG =
+//     pros::c::vision_signature_from_utility(3, -4793, -4173, -4483, 1069, 2765, 1917, 3, 0);
 
 // Pros motor groups - most used by lemlib
 pros::MotorGroup driveLeft({leftFront.get_port(), leftBack.get_port()});

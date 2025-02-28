@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 namespace Robot {
 
 /**
@@ -37,5 +39,7 @@ class Intake {
 
  private:
    bool elevated;
+   double stopPosition;
+   uint32_t lastWrongRingTime;
 };
 } // namespace Robot

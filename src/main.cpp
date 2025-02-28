@@ -59,9 +59,9 @@ void initialize() {
   driveRight.set_brake_mode(brakeMode);
   drive.set_brake_mode(brakeMode);
 
+  colorSensor.set_exposure(150);
   colorSensor.set_signature(1, &RED_SIG);
   colorSensor.set_signature(2, &BLUE_SIG);
-  colorSensor.set_signature(3, &BLUE_DARK_SIG);
 }
 
 /**

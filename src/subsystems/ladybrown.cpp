@@ -12,14 +12,14 @@ using namespace Robot::Globals;
 
 LadyBrown::LADYBROWN_STATE LadyBrown::current_state = LadyBrown::BASE_STATE;
 
-LadyBrown::LadyBrown() : MoveToPointPID(50, 0, 0, 2, false) {
-  ladyBrownMotor1.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-  ladyBrownMotor2.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+LadyBrown::LadyBrown() : MoveToPointPID(75, 0, 0, 2, false) {
+  ladyBrownMotor1.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+  ladyBrownMotor2.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 }
 
 void LadyBrown::run(bool async, int timeout) {
    LADYBROWN_STATE move_to;
-   std::cout << "ladybrown encoder value: " << get_position() << " state " << current_state << std::endl;
+   // std::cout << "ladybrown encoder value: " << get_position() << " state " << current_state << std::endl;
 
    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R2)) {
       if (current_state == BASE_STATE) {
@@ -76,19 +76,19 @@ double LadyBrown::get_position() {
 
 void LadyBrown::MoveToPoint(LADYBROWN_STATE state, int max_error, int timeout) {
 
-   std::cout << "state: " << current_state << std::endl;
+   // std::cout << "state: " << current_state << std::endl;
    constexpr double baseLocation = 0;
-   constexpr double loadLocation = 60;
-   constexpr double attackLocation = 330;
+   constexpr double loadLocation = 61;
+   constexpr double attackLocation = 350;
 
    int target;
 
-   std::cout << "state: " << state << std::endl;
-   std::cout << "pid: " << isPIDRunning << std::endl;
+   // std::cout << "state: " << state << std::endl;
+   // std::cout << "pid: " << isPIDRunning << std::endl;
 
    if (!isPIDRunning) {
 
-      std::cout << "inner pid: " << isPIDRunning << std::endl;
+      // std::cout << "inner pid: " << isPIDRunning << std::endl;
       LadyBrown::isPIDRunning = true;
 
       switch (state) {
@@ -103,7 +103,7 @@ void LadyBrown::MoveToPoint(LADYBROWN_STATE state, int max_error, int timeout) {
          break;
       }
 
-      std::cout << "target: " << target << std::endl;
+      // std::cout << "target: " << target << std::endl;
 
       MoveToPointPID.reset();
 
